@@ -61,6 +61,9 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-
 .tag.primary { border-color: var(--accent-soft); background: var(--accent-soft); color: var(--accent); }
 .project-card h3 { margin: 0 0 15px; font-size: clamp(27px, 3vw, 38px); letter-spacing: -.055em; line-height: 1.2; }
 .project-card p { margin: 0 0 24px; color: var(--muted); font-size: 16px; line-height: 1.75; }
+.project-tech { display: grid; gap: 3px; margin: 0 0 23px; font-size: 13px; line-height: 1.6; }
+.project-tech strong { color: var(--ink); font-size: 12px; }
+.project-tech span { color: var(--muted); overflow-wrap: anywhere; }
 .project-result { display: inline-block; margin-top: auto; padding: 10px 13px; border-radius: 9px; background: var(--surface-alt); color: var(--ink); font-size: 14px; line-height: 1.55; }
 .text-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; font-size: 14px; font-weight: 800; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 5px; }
 .project-art { position: relative; min-height: 290px; display: grid; place-items: center; overflow: hidden; background: var(--accent-soft); padding: 36px; }
@@ -94,7 +97,7 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-
 .principle p { margin: 0; color: var(--muted); font-size: 15px; }
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8%; }
 .about-grid p { margin: 0; color: var(--muted); }
-.about-list { margin: 0; padding: 0; list-style: none; }
+.about-list { max-width: 780px; margin: 0; padding: 0; list-style: none; }
 .about-list li { display: grid; grid-template-columns: 96px 1fr; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
 .about-list strong { color: var(--ink); }
 .about-list span { color: var(--muted); }
