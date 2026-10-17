@@ -11,24 +11,26 @@
     toggle.innerHTML = `<span aria-hidden="true">${enabled ? '◖))' : '◖)'}</span><span>소리 ${enabled ? '켜짐' : '꺼짐'}</span>`;
   }
 
-  function tick() {
+  function chime() {
     if (!enabled) return;
     const Context = window.AudioContext || window.webkitAudioContext;
     if (!Context) return;
     try {
       audio ||= new Context();
       if (audio.state === 'suspended') audio.resume();
-      const oscillator = audio.createOscillator();
-      const gain = audio.createGain();
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(550, audio.currentTime);
-      oscillator.frequency.exponentialRampToValueAtTime(740, audio.currentTime + .065);
-      gain.gain.setValueAtTime(.0001, audio.currentTime);
-      gain.gain.exponentialRampToValueAtTime(.025, audio.currentTime + .01);
-      gain.gain.exponentialRampToValueAtTime(.0001, audio.currentTime + .12);
-      oscillator.connect(gain).connect(audio.destination);
-      oscillator.start();
-      oscillator.stop(audio.currentTime + .13);
+      const start = audio.currentTime;
+      [[392, 0], [523.25, .055]].forEach(([frequency, delay]) => {
+        const oscillator = audio.createOscillator();
+        const gain = audio.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = frequency;
+        gain.gain.setValueAtTime(.0001, start + delay);
+        gain.gain.exponentialRampToValueAtTime(.012, start + delay + .018);
+        gain.gain.exponentialRampToValueAtTime(.0001, start + delay + .19);
+        oscillator.connect(gain).connect(audio.destination);
+        oscillator.start(start + delay);
+        oscillator.stop(start + delay + .2);
+      });
     } catch (_) { /* sound is optional */ }
   }
 
@@ -38,11 +40,11 @@
       enabled = !enabled;
       try { localStorage.setItem(key, String(enabled)); } catch (_) { /* private mode */ }
       label();
-      tick();
+      chime();
     });
-    document.querySelectorAll('.project-card a, .next-case, .experiment-row, .button').forEach(link => {
-      link.addEventListener('pointerdown', tick);
-      link.addEventListener('keydown', event => { if (event.key === 'Enter') tick(); });
+    document.querySelectorAll('.site-nav a, .project-card .text-link, .next-case, .experiment-row, .button').forEach(link => {
+      link.addEventListener('pointerdown', chime);
+      link.addEventListener('keydown', event => { if (event.key === 'Enter') chime(); });
     });
   }
 
