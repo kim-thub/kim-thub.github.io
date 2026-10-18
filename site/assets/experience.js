@@ -8,7 +8,10 @@
 
   function label() {
     toggle.setAttribute('aria-pressed', String(enabled));
-    toggle.innerHTML = `<span aria-hidden="true">${enabled ? '◖))' : '◖)'}</span><span>소리 ${enabled ? '켜짐' : '꺼짐'}</span>`;
+    const soundLabel = document.documentElement.lang === 'en'
+      ? (enabled ? 'Sound on' : 'Sound off')
+      : '소리 ' + (enabled ? '켜짐' : '꺼짐');
+    toggle.innerHTML = '<span aria-hidden="true">' + (enabled ? '◖))' : '◖)') + '</span><span>' + soundLabel + '</span>';
   }
 
   function chime() {
@@ -36,6 +39,7 @@
 
   if (toggle) {
     label();
+    document.addEventListener('portfolio:language-changed', label);
     toggle.addEventListener('click', () => {
       enabled = !enabled;
       try { localStorage.setItem(key, String(enabled)); } catch (_) { /* private mode */ }
