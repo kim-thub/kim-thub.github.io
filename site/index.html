@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-page="home">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="김수빈의 개발 프로젝트 포트폴리오. API, 데이터 처리, 성능 개선, 테스트 자동화 경험과 검증 근거를 소개합니다.">
   <title>김수빈 | Software Engineer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=20261017-fonts">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=20261018-i18n">
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 이동</a>
@@ -13,7 +13,7 @@
     <div class="shell header-inner">
       <a class="brand" href="./" aria-label="김수빈 포트폴리오 홈"><span class="brand-mark">SK.</span><span>김수빈</span></a>
       <nav class="site-nav" aria-label="주요 메뉴">
-        <a href="#work">프로젝트</a><a href="#approach">일하는 방식</a><a href="#about">소개</a><a class="nav-contact" href="#contact">연락처 ↗</a><button class="sound-toggle" type="button" aria-label="인터페이스 소리 켜기 또는 끄기" aria-pressed="false"><span aria-hidden="true">◖)</span><span>소리 꺼짐</span></button>
+        <a href="#work">프로젝트</a><a href="#approach">일하는 방식</a><a href="#about">소개</a><a class="nav-contact" href="#contact">연락처 ↗</a><div class="language-switch" data-language-switch role="group" aria-label="언어 전환"><button type="button" data-language="ko" aria-label="한국어로 보기" aria-pressed="true">KO</button><button type="button" data-language="en" aria-label="영어로 보기" aria-pressed="false">EN</button></div><button class="sound-toggle" type="button" aria-label="인터페이스 소리 켜기 또는 끄기" aria-pressed="false"><span aria-hidden="true">◖)</span><span>소리 꺼짐</span></button>
       </nav>
     </div>
   </header>
@@ -21,7 +21,7 @@
     <section class="shell hero" aria-labelledby="hero-title">
       <div>
         <div class="eyebrow">Software Engineer · Backend / Service</div>
-        <h1 id="hero-title">데이터가 흐르는 길을<br><span class="accent">끝까지</span> 확인합니다.</h1>
+        <h1 id="hero-title" data-i18n-title>데이터가 흐르는 길을<br><span class="accent">끝까지</span> 확인합니다.</h1>
         <p class="hero-lead">외부 데이터를 저장하고 API 응답으로 돌려주는 흐름을 구현했습니다. 느린 요청은 SQL과 애플리케이션 시간을 나눠 측정하고, 조회 범위와 캐시를 바꾼 뒤 다시 확인했습니다.</p>
         <div class="button-row"><a class="button" href="#work">대표 프로젝트 보기 <span aria-hidden="true">↗</span></a><a class="button secondary" href="https://github.com/kim-thub" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a></div>
       </div>
@@ -57,5 +57,5 @@
     <section class="section" id="about" aria-labelledby="about-title"><div class="shell"><div class="section-head"><div><div class="eyebrow">About</div><h2 id="about-title">김수빈</h2></div></div><ul class="about-list"><li><strong>학력</strong><span>금오공과대학교 컴퓨터공학과 학사</span></li><li><strong>교육</strong><span>구름 AX 서비스 풀스택 빌더 과정 (2026.08–12, 수강 중)</span></li><li><strong>자격증</strong><span>정보처리기사 · 네트워크관리사 2급 · SQL개발자(SQLD)</span></li></ul></div></section>
   </main>
   <footer class="site-footer" id="contact"><div class="shell"><div class="footer-grid"><div><div class="eyebrow">Contact</div><h2>함께 살펴볼 문제가 있다면<br>연락해 주세요.</h2><div class="footer-links"><a href="mailto:wesbeen.k@gmail.com">wesbeen.k@gmail.com</a><a href="https://github.com/kim-thub" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div><a class="button" href="mailto:wesbeen.k@gmail.com?subject=%EA%B9%80%EC%88%98%EB%B9%88%20%EC%9D%B4%EB%A0%A5%EC%84%9C%20%EC%9A%94%EC%B2%AD">이력서 PDF 요청 ↗</a></div><div class="copyright">© 2026 Kim Su Been · 프로젝트의 개인 기여와 검증 범위는 상세 페이지에 표기했습니다.</div></div></footer>
-<script src="assets/experience.js?v=20261017" defer></script></body>
+<script src="assets/i18n.js?v=20261018" defer></script><script src="assets/experience.js?v=20261017" defer></script></body>
 </html>
