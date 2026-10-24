@@ -132,7 +132,7 @@ Object.assign(dictionary,{
 Object.assign(dictionary,{
 '팀에서 데이터 적재·AI 수치 검증을 맡고, 개인 마이그레이션에서 API 계약을 유지하며 조회 범위와 캐시를 개선했습니다.':'I handled data ingestion and AI-generated number validation in the team project, then improved retrieval scope and caching in a personal migration while preserving the API contract.',
 '처음엔 일정이 촉박해 캐시를 미뤘습니다. 개인 마이그레이션에서는 Redis 경험과 Render 무료 배포 조건에 맞춰 메모리 캐시를 적용하고 반복 조회를 줄였습니다.':'I initially deferred caching because the schedule was tight. During my personal migration, I used an in-memory cache that fit my Redis experience and Render free-tier constraints to reduce repeated queries.',
-'처음엔 미루고, 마이그레이션에서 적용':'Deferred at first, then applied during migration','측정한 결과':'Measured results','현재 구현의 trade-off':'Trade-offs in the current implementation',
+'처음엔 미루고, 마이그레이션에서 적용했습니다':'Deferred it at first, then implemented it during migration.','측정한 결과':'Measured results','현재 구현의 trade-off':'Trade-offs in the current implementation',
 '필요한 행을 좁히고, 반복 데이터를 재사용':'Narrow the query and reuse repeated data',
 '함수 공통화로 중복 로직을 줄이는 것과 원격 조회 비용을 줄이는 것은 다른 문제였습니다. 캐시는 적중할 때 여러 API가 같은 모집단 결과를 다시 사용할 수 있도록 적용했습니다.':'Reducing duplicate logic through shared functions and reducing remote-query cost were different problems. I added caching so multiple APIs could reuse the same population result on a cache hit.',
 '캐시 도입은 일정과 기술 경험에 따라 두 단계로 달라졌습니다.':'My caching decision changed in two stages because of schedule and my technical experience.',
@@ -187,8 +187,9 @@ route();
   const button=document.getElementById('sound'), key='kim-su-been-sound';
   let enabled=false,lastCue=0,indicatorTimer;
   // Single UI transition sample, SFXMint Short UI Swipe 34, CC0 1.0.
-  const transitionSound=new Audio('https://sfxmint.com/dl/ui-swipe-34.mp3');
-  transitionSound.preload='auto';transitionSound.volume=.8;
+  const transitionSound=new Audio('https://sfxmint.com/dl/ui-swipe-50.mp3');
+  transitionSound.preload='auto';transitionSound.volume=.68;
+  transitionSound.preservesPitch=false;transitionSound.playbackRate=.8;
   try{enabled=localStorage.getItem(key)==='on'}catch(_){}
   function sync(){
     const english=document.documentElement.lang==='en';
@@ -201,7 +202,7 @@ route();
     try{
       transitionSound.pause();transitionSound.currentTime=0;
       await transitionSound.play();
-      button.classList.add('playing');clearTimeout(indicatorTimer);indicatorTimer=setTimeout(()=>button.classList.remove('playing'),750);
+      button.classList.add('playing');clearTimeout(indicatorTimer);indicatorTimer=setTimeout(()=>button.classList.remove('playing'),1050);
     }catch(_){}
   }
   button.addEventListener('click',()=>{enabled=!enabled;try{localStorage.setItem(key,enabled?'on':'off')}catch(_){}sync()});
