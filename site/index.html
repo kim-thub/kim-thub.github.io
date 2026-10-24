@@ -185,42 +185,31 @@ route();
 </script><script>
 (()=>{
   const button=document.getElementById('sound'), key='kim-su-been-sound';
-  let enabled=false, context, lastCue=0, indicatorTimer;
+  let enabled=false,lastCue=0,indicatorTimer;
+  // Single UI transition sample, SFXMint Short UI Swipe 34, CC0 1.0.
+  const transitionSound=new Audio('https://sfxmint.com/dl/ui-swipe-34.mp3');
+  transitionSound.preload='auto';transitionSound.volume=.8;
   try{enabled=localStorage.getItem(key)==='on'}catch(_){}
   function sync(){
     const english=document.documentElement.lang==='en';
     const label=english?(enabled?'Turn sound off':'Turn sound on'):(enabled?'소리 끄기':'소리 켜기');
     button.setAttribute('aria-pressed',String(enabled));button.setAttribute('aria-label',label);button.title=label;
   }
-  // One soft, continuous page-swish: no click, crackle, or layered second hit.
-  function pageSwish(at){
-    const length=.58,frames=Math.ceil(context.sampleRate*length);
-    const buffer=context.createBuffer(1,frames,context.sampleRate),data=buffer.getChannelData(0);
-    for(let i=0;i<frames;i++)data[i]=Math.random()*2-1;
-    const source=context.createBufferSource(),band=context.createBiquadFilter(),gain=context.createGain();
-    source.buffer=buffer;band.type='bandpass';band.Q.value=.62;
-    band.frequency.setValueAtTime(1050,at);band.frequency.exponentialRampToValueAtTime(470,at+length);
-    gain.gain.setValueAtTime(.0001,at);
-    gain.gain.exponentialRampToValueAtTime(.055,at+.085);
-    gain.gain.exponentialRampToValueAtTime(.0001,at+length);
-    source.connect(band).connect(gain).connect(context.destination);
-    source.start(at);source.stop(at+length);
-  }
   async function cue(kind){
     if(!enabled||(kind!=='open'&&kind!=='back'))return;
-    const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;
-    const nowMs=performance.now();if(nowMs-lastCue<360)return;lastCue=nowMs;
+    const nowMs=performance.now();if(nowMs-lastCue<600)return;lastCue=nowMs;
     try{
-      context ||= new Audio();if(context.state==='suspended')await context.resume();
-      pageSwish(context.currentTime+.008);
-      button.classList.add('playing');clearTimeout(indicatorTimer);indicatorTimer=setTimeout(()=>button.classList.remove('playing'),620);
+      transitionSound.pause();transitionSound.currentTime=0;
+      await transitionSound.play();
+      button.classList.add('playing');clearTimeout(indicatorTimer);indicatorTimer=setTimeout(()=>button.classList.remove('playing'),750);
     }catch(_){}
   }
   button.addEventListener('click',()=>{enabled=!enabled;try{localStorage.setItem(key,enabled?'on':'off')}catch(_){}sync()});
   document.addEventListener('click',event=>{
     if(!enabled||event.target.closest('#sound'))return;
     const target=event.target.closest('button,a');if(!target)return;
-    if(target.matches('a[href^="#p/"]'))cue('open');
+    const href=target.getAttribute('href')||'';
+    if(/^#p\/[^/]+$/.test(href))cue('open');
     else if(target.matches('.detail-back'))cue('back');
   });
   new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});sync();
