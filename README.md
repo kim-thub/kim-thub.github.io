@@ -1,39 +1,15 @@
 # 김수빈 웹 포트폴리오
 
-GitHub Pages용 정적 사이트입니다. 서버·패키지 설치·빌드 명령이 필요하지 않습니다.
+GitHub Pages용 정적 사이트입니다. `site/index.html`에 홈과 네 프로젝트 상세 화면이 함께 들어 있습니다. 이전 프로젝트 URL은 새 화면으로 이동합니다. 서버나 빌드는 필요하지 않습니다.
 
-## 제출처별 색상 변경
+## 색상
 
-`site/assets/theme.css`의 `:root` 변수만 수정하세요. 모든 페이지의 배경, 글자, 카드, 버튼, 태그, 그래프가 이 값을 사용합니다.
+`site/index.html` 첫 번째 `<style>`의 `:root`에서 `--accent`와 `--soft`를 바꾸면 강조색과 옅은 강조색이 함께 바뀝니다. 공개 화면에는 색상 변경 버튼을 두지 않았습니다. 제출처마다 색상을 바꿀 때는 이 두 변수의 대비를 확인하세요.
 
-| 변수 | 쓰임 |
-| --- | --- |
-| `--canvas`, `--surface`, `--surface-alt` | 바탕과 카드 |
-| `--ink`, `--muted`, `--line` | 본문과 경계선 |
-| `--accent`, `--accent-ink` | 링크·강조·버튼 대비. 연한 강조색은 자동 생성 |
-| `--highlight`, `--highlight-ink` | 보조 강조 |
-| `--chart-before`, `--chart-after` | 성능 비교 막대. `--accent`를 따라 자동 변경 |
+## 사운드
 
-예: 지원 회사의 브랜드색에 맞추려면 `--accent` 하나를 바꿉니다. 연한 강조색과 그래프 색도 함께 바뀝니다. 버튼 글자가 읽히지 않으면 `--accent-ink`도 조정하고 대비를 확인하세요. 다른 HTML 파일에서 색상 코드를 변경할 필요가 없습니다.
+헤더의 스피커 아이콘으로 소리를 켜고 끕니다. 기본값은 꺼짐이며 선택 상태를 브라우저에 저장합니다. 활성화, 프로젝트 진입·복귀, Before/After 전환, 상세 비교·차단 상태에 각각 짧은 소리가 납니다. 소리는 Web Audio API로 생성하고 외부 파일을 불러오지 않습니다. 브라우저 정책상 아이콘을 누른 뒤부터 재생됩니다. 스크롤, 호버, 외부 링크에는 소리를 넣지 않았습니다.
 
-## 로컬 확인
+## 검증과 배포
 
-```bash
-cd site
-python3 -m http.server 8000
-```
-
-브라우저에서 `http://localhost:8000`을 엽니다. 파일로 직접 열 때도 상대 경로가 동작하지만, 로컬 서버로 확인하는 편이 링크 검증에 적합합니다.
-
-내부 링크 검사는 저장소 루트에서 `python3 scripts/check_site.py`를 실행합니다. GitHub Actions에서도 게시 전에 같은 검사를 합니다.
-
-## GitHub Pages 게시
-
-1. 새 공개 저장소 `kim-thub.github.io`를 만듭니다. 동일 이름이 이미 있다면 다른 저장소 이름도 사용할 수 있지만, URL에 저장소 경로가 붙습니다.
-2. 이 폴더의 `README.md`, `site/`, `.github/`를 저장소 루트에 커밋하고 `main`에 푸시합니다.
-3. 저장소 **Settings → Pages → Build and deployment → Source**에서 **GitHub Actions**를 선택합니다.
-4. Actions의 `Deploy portfolio to GitHub Pages` 실행 성공과 실제 모바일·데스크톱 페이지를 확인합니다.
-
-게시 전에는 팀 자료의 공개 가능 범위와 링크를 다시 확인하세요. SPOT RADAR의 팀 저장소와 GitHub Taskflow는 공개이고, 개인 Spring 저장소와 Webtoon Feedback 저장소는 비공개입니다. 이 사이트에는 비공개 저장소의 코드·커밋 링크를 공개 근거처럼 배치하지 않았습니다.
-
-공개 이력서 PDF에는 전화번호가 있어 첫 버전에 포함하지 않았습니다. 홈의 버튼은 이메일로 이력서 PDF를 요청하도록 구성했습니다.
+저장소 루트에서 `python3 scripts/check_site.py`로 링크를 확인합니다. 페이지의 JavaScript는 Node의 `--check`로 문법을 검사할 수 있습니다. `main`에 반영되면 GitHub Actions가 검사 후 `site/`를 GitHub Pages에 게시합니다.

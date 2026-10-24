@@ -49,7 +49,7 @@ def main():
         parsed = Page()
         parsed.feed(page_path.read_text(encoding="utf-8"))
         pages[page_path.resolve()] = parsed
-        if parsed.headings != 1 or not parsed.title:
+        if parsed.headings != (5 if page_path == ROOT / "index.html" else 1) or not parsed.title:
             errors.append(f"{page_path}: title or single h1 missing")
         for duplicate in parsed.duplicates:
             errors.append(f"{page_path}: duplicate id #{duplicate}")
@@ -62,7 +62,7 @@ def main():
             local_path, fragment = target
             if not local_path.is_relative_to(ROOT.resolve()) or not local_path.exists():
                 errors.append(f"{page_path}: broken local link {href}")
-            elif fragment and local_path.suffix == ".html" and fragment not in pages[local_path].ids:
+            elif fragment and not fragment.startswith("p/") and local_path.suffix == ".html" and fragment not in pages[local_path].ids:
                 errors.append(f"{page_path}: missing anchor {href}")
 
     if errors:
