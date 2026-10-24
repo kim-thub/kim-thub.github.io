@@ -192,54 +192,36 @@ route();
     const label=english?(enabled?'Turn sound off':'Turn sound on'):(enabled?'소리 끄기':'소리 켜기');
     button.setAttribute('aria-pressed',String(enabled));button.setAttribute('aria-label',label);button.title=label;
   }
-  // A dry, rounded key tap and a short paper-like movement. No melodic UI chimes.
-  function texture(at,length,cutoff,level,swish=false){
-    const buffer=context.createBuffer(1,Math.ceil(context.sampleRate*length),context.sampleRate),data=buffer.getChannelData(0);
-    for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
-    const source=context.createBufferSource(),high=context.createBiquadFilter(),low=context.createBiquadFilter(),gain=context.createGain();
-    source.buffer=buffer;high.type='highpass';high.frequency.value=swish?420:280;
-    low.type='lowpass';low.frequency.value=cutoff;
+  // One soft, continuous page-swish: no click, crackle, or layered second hit.
+  function pageSwish(at){
+    const length=.58,frames=Math.ceil(context.sampleRate*length);
+    const buffer=context.createBuffer(1,frames,context.sampleRate),data=buffer.getChannelData(0);
+    for(let i=0;i<frames;i++)data[i]=Math.random()*2-1;
+    const source=context.createBufferSource(),band=context.createBiquadFilter(),gain=context.createGain();
+    source.buffer=buffer;band.type='bandpass';band.Q.value=.62;
+    band.frequency.setValueAtTime(1050,at);band.frequency.exponentialRampToValueAtTime(470,at+length);
     gain.gain.setValueAtTime(.0001,at);
-    gain.gain.exponentialRampToValueAtTime(level,at+(swish?.045:.004));
+    gain.gain.exponentialRampToValueAtTime(.055,at+.085);
     gain.gain.exponentialRampToValueAtTime(.0001,at+length);
-    source.connect(high).connect(low).connect(gain).connect(context.destination);
+    source.connect(band).connect(gain).connect(context.destination);
     source.start(at);source.stop(at+length);
   }
-  function wood(at,weight=1){
-    const length=.105,osc=context.createOscillator(),gain=context.createGain();
-    osc.type='sine';osc.frequency.setValueAtTime(340,at);osc.frequency.exponentialRampToValueAtTime(175,at+.07);
-    gain.gain.setValueAtTime(.0001,at);
-    gain.gain.exponentialRampToValueAtTime(.15*weight,at+.006);
-    gain.gain.exponentialRampToValueAtTime(.0001,at+length);
-    osc.connect(gain).connect(context.destination);osc.start(at);osc.stop(at+length);
-    texture(at,.075,1900,.22*weight);
-  }
-  function paper(at,weight=1){texture(at,.16,2450,.13*weight,true)}
   async function cue(kind){
-    if(!enabled)return;
+    if(!enabled||(kind!=='open'&&kind!=='back'))return;
     const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;
-    const nowMs=performance.now();if(kind!=='enable'&&nowMs-lastCue<95)return;lastCue=nowMs;
+    const nowMs=performance.now();if(nowMs-lastCue<360)return;lastCue=nowMs;
     try{
       context ||= new Audio();if(context.state==='suspended')await context.resume();
-      const t=context.currentTime+.008;
-      if(kind==='enable'){wood(t,1.1);paper(t+.055,.9)}
-      else if(kind==='open'){paper(t,.9);wood(t+.055,1)}
-      else if(kind==='back'){wood(t,.78);paper(t+.018,.6)}
-      else if(kind==='after'){wood(t,1);wood(t+.105,.56)}
-      else if(kind==='before'||kind==='blocked'){wood(t,.68)}
-      else {wood(t,.76)}
-      button.classList.add('playing');clearTimeout(indicatorTimer);indicatorTimer=setTimeout(()=>button.classList.remove('playing'),330);
+      pageSwish(context.currentTime+.008);
+      button.classList.add('playing');clearTimeout(indicatorTimer);indicatorTimer=setTimeout(()=>button.classList.remove('playing'),620);
     }catch(_){}
   }
-  button.addEventListener('click',()=>{enabled=!enabled;try{localStorage.setItem(key,enabled?'on':'off')}catch(_){}sync();if(enabled)cue('enable')});
+  button.addEventListener('click',()=>{enabled=!enabled;try{localStorage.setItem(key,enabled?'on':'off')}catch(_){}sync()});
   document.addEventListener('click',event=>{
     if(!enabled||event.target.closest('#sound'))return;
     const target=event.target.closest('button,a');if(!target)return;
-    if(target.matches('.switch button'))cue(target.id==='before'?'before':'after');
-    else if(target.matches('.demo-controls button'))cue(target.dataset.mode==='blocked'?'blocked':'select');
-    else if(target.matches('.language-toggle'))cue('select');
-    else if(target.matches('a[href^="#p/"]'))cue('open');
-    else if(target.matches('.detail-back, a[href="#work"], a[href="#"]'))cue('back');
+    if(target.matches('a[href^="#p/"]'))cue('open');
+    else if(target.matches('.detail-back'))cue('back');
   });
   new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});sync();
 })();
