@@ -15,6 +15,7 @@ class Page(HTMLParser):
         self.duplicates: set[str] = set()
         self.links: list[str] = []
         self.headings = 0
+        self.detail_pages = 0
         self.title = False
 
     def handle_starttag(self, tag, attrs):
@@ -26,6 +27,8 @@ class Page(HTMLParser):
             self.ids.add(element_id)
         if tag == "h1":
             self.headings += 1
+        if tag == "article" and "detail-page" in attributes.get("class", "").split():
+            self.detail_pages += 1
         if tag == "title":
             self.title = True
         if tag in {"a", "link"} and attributes.get("href"):
@@ -49,8 +52,9 @@ def main():
         parsed = Page()
         parsed.feed(page_path.read_text(encoding="utf-8"))
         pages[page_path.resolve()] = parsed
-        if parsed.headings != (5 if page_path == ROOT / "index.html" else 1) or not parsed.title:
-            errors.append(f"{page_path}: title or single h1 missing")
+        expected_headings = 1 + parsed.detail_pages if page_path == ROOT / "index.html" else 1
+        if parsed.headings != expected_headings or not parsed.title:
+            errors.append(f"{page_path}: title or expected h1 count missing")
         for duplicate in parsed.duplicates:
             errors.append(f"{page_path}: duplicate id #{duplicate}")
 
@@ -62,7 +66,15 @@ def main():
             local_path, fragment = target
             if not local_path.is_relative_to(ROOT.resolve()) or not local_path.exists():
                 errors.append(f"{page_path}: broken local link {href}")
-            elif fragment and not fragment.startswith("p/") and local_path.suffix == ".html" and fragment not in pages[local_path].ids:
+            elif fragment.startswith("p/"):
+                route_parts = fragment.split("/")
+                if len(route_parts) not in {2, 3} or local_path not in pages:
+                    errors.append(f"{page_path}: invalid SPA route {href}")
+                else:
+                    expected_id = "page-" + route_parts[1] if len(route_parts) == 2 else route_parts[1] + "-" + route_parts[2]
+                    if expected_id not in pages[local_path].ids:
+                        errors.append(f"{page_path}: missing SPA route target {href}")
+            elif fragment and local_path.suffix == ".html" and fragment not in pages[local_path].ids:
                 errors.append(f"{page_path}: missing anchor {href}")
 
     if errors:
