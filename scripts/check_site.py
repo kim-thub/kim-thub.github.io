@@ -15,6 +15,7 @@ class Page(HTMLParser):
         self.duplicates: set[str] = set()
         self.links: list[str] = []
         self.headings = 0
+        self.detail_pages = 0
         self.title = False
 
     def handle_starttag(self, tag, attrs):
@@ -26,6 +27,8 @@ class Page(HTMLParser):
             self.ids.add(element_id)
         if tag == "h1":
             self.headings += 1
+        if tag == "article" and "detail-page" in attributes.get("class", "").split():
+            self.detail_pages += 1
         if tag == "title":
             self.title = True
         if tag in {"a", "link"} and attributes.get("href"):
@@ -49,7 +52,8 @@ def main():
         parsed = Page()
         parsed.feed(page_path.read_text(encoding="utf-8"))
         pages[page_path.resolve()] = parsed
-        if parsed.headings != (5 if page_path == ROOT / "index.html" else 1) or not parsed.title:
+        expected_headings = 1 + parsed.detail_pages if page_path == ROOT / "index.html" else 1
+        if parsed.headings != expected_headings or not parsed.title:
             errors.append(f"{page_path}: title or single h1 missing")
         for duplicate in parsed.duplicates:
             errors.append(f"{page_path}: duplicate id #{duplicate}")
