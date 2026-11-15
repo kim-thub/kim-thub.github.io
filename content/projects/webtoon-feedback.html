@@ -1,0 +1,74 @@
+<article class="project-case" id="case-webtoon-feedback" data-project="webtoon-feedback">
+  <div class="case-copy">
+    <h2>Webtoon Feedback</h2>
+    <p class="project-lede">한 편의 이야기가 독자에게 닿은 뒤에는 저마다 다른 반응이 남습니다. 댓글과 별점 사이에 흩어진 감상을 분석하고, 생성형 피드백으로 정리해 작가가 독자의 반응을 되짚어 볼 수 있도록 했습니다.</p>
+    <dl class="project-facts">
+      <div><dt>프로젝트</dt><dd>팀 프로젝트, 팀 리더</dd></div>
+      <div><dt>기간</dt><dd>2024.03–06</dd></div>
+      <div><dt>기술</dt><dd>Python, Flask, PocketBase, NLP, Gemini</dd></div>
+      <div><dt>결과물</dt><dd>웹툰 댓글 분석과 피드백 저장 서비스</dd></div>
+    </dl>
+    <section class="project-overview" id="webtoon-overview">
+      <h3>프로젝트 개요</h3>
+      <p>댓글과 별점 반응이 쌓이면 작가가 작품별 의견을 직접 모아 살펴보기 어렵습니다. 이 서비스는 작품을 등록하고 수집된 반응을 분류해 감성과 유사한 의견을 보여준 뒤, 생성된 피드백을 저장합니다. 크롤링 이후의 Flask 앱이 분석부터 저장까지 이어주는 팀 프로젝트입니다.</p>
+    </section>
+    <section class="project-features" id="webtoon-features">
+      <h3>서비스 기능</h3>
+      <ul class="project-feature-list">
+        <li><strong>작품 관리</strong><p>분석할 웹툰을 등록하고 목록에서 제거합니다.</p></li>
+        <li><strong>댓글 반응 분석</strong><p>댓글을 라벨과 감성, 유사도 기준으로 분류해 작품에 대한 반응을 살펴봅니다.</p></li>
+        <li><strong>피드백 저장</strong><p>분석 결과를 바탕으로 Gemini 피드백을 만들고 PocketBase에 저장합니다.</p></li>
+      </ul>
+    </section>
+    <figure class="project-map webtoon-map" id="webtoon-flow" aria-labelledby="webtoon-flow-title">
+      <figcaption id="webtoon-flow-title">댓글과 별점이 분석 결과와 저장된 피드백으로 이어집니다</figcaption>
+      <div class="webtoon-pipeline">
+        <div class="webtoon-stage webtoon-stage--team"><small>입력 데이터</small><strong>댓글과 별점</strong><p><code>toon_clawer/</code>에서 수집</p></div>
+        <span class="webtoon-pipeline-arrow" aria-hidden="true">→</span>
+        <div class="webtoon-stage webtoon-stage--mine"><small>서비스 연결</small><strong>Flask 라우팅과 Usecase</strong><p>요청을 앱 기능에 연결</p></div>
+        <span class="webtoon-pipeline-arrow" aria-hidden="true">→</span>
+        <div class="webtoon-stage webtoon-stage--mine"><small>반응 분석</small><strong>라벨링, 감성, 유사도</strong><p>댓글 반응을 분류하고 유사 의견을 묶음</p></div>
+        <span class="webtoon-pipeline-arrow" aria-hidden="true">→</span>
+        <div class="webtoon-stage webtoon-stage--mine"><small>생성과 저장</small><strong>Gemini 피드백</strong><p>PocketBase에 결과 저장</p></div>
+      </div>
+      <p class="map-note">첫 단계는 팀의 크롤러가 제공한 입력입니다. 나머지 서비스 처리 단계를 제가 구현했습니다.</p>
+    </figure>
+    <section class="project-screens" aria-labelledby="webtoon-screens-title">
+      <h3 id="webtoon-screens-title">화면 자료</h3>
+      <div class="screen-gallery webtoon-gallery screen-gallery-two">
+        <figure class="screen-shot">
+          <img src="assets/webtoon-feedback-list.png" alt="등록된 웹툰 목록과 웹툰 추가 버튼이 보이는 서비스 화면" loading="lazy" decoding="async">
+          <figcaption><strong>등록된 웹툰 목록</strong><span>분석 대상으로 등록한 작품을 목록에서 확인합니다.</span></figcaption>
+        </figure>
+        <figure class="screen-shot">
+          <img src="assets/webtoon-feedback-add-modal.png" alt="웹툰 제목과 URL을 입력하는 추가 모달 화면" loading="lazy" decoding="async">
+          <figcaption><strong>웹툰 추가</strong><span>제목과 URL을 입력해 분석할 작품을 등록합니다.</span></figcaption>
+        </figure>
+      </div>
+      <p class="map-note">실행 중인 화면 캡처입니다. 기획과 팀 산출물은 <a href="https://curved-approach-a38.notion.site/Team-Project-30236972eb504556bd153638cb58cb51" target="_blank" rel="noopener noreferrer">프로젝트 문서</a>에서 확인할 수 있습니다.</p>
+    </section>
+    <section class="project-contribution" id="webtoon-contribution">
+      <h3>제가 맡은 일</h3>
+      <p>팀 리더로 일정과 기능 범위를 조율했습니다. 화면 구현 폴더인 <code>static/</code>과 <code>templates/</code>, 크롤러인 <code>toon_clawer/</code>, 최종 발표를 제외한 나머지 코드를 구현했습니다. Flask 라우팅과 Usecase, PocketBase 연결, 라벨링과 감성 분석, 유사도 분석, Gemini 피드백 생성과 저장, 관련 데이터와 모델 리소스를 맡았습니다. 팀원이 담당한 화면과 크롤러는 제 기여로 포함하지 않았습니다.</p>
+    </section>
+    <section class="project-highlight" id="webtoon-label-case">
+      <h3>대표 수정 · 화면 집계와 생성형 피드백의 기준을 맞춤</h3>
+      <p>분석 대상이 아닌 라벨 4가 화면 집계와 Gemini 입력에 남으면, 두 결과가 서로 다른 댓글을 요약할 수 있었습니다. 두 경로에서 같은 제외 기준을 적용했고, 이미 처리한 최신 회차는 다시 분석하지 않도록 정리했습니다.</p>
+      <p>수정 코드와 수동 확인 범위는 <a href="#post/webtoon-feedback-pipeline">분석 파이프라인 기록</a>에서 확인할 수 있습니다. 자동 테스트나 처리 시간 비교를 수행한 근거는 없습니다.</p>
+    </section>
+    <section class="project-evidence" id="webtoon-outcome">
+      <h3>직접 확인한 범위와 한계</h3>
+      <div class="evidence-grid">
+        <div class="evidence-card"><strong>수동 실행 확인</strong><p>웹툰 등록·삭제, 분석 화면 이동, NLP 결과 생성, PocketBase 저장을 직접 실행했습니다.</p></div>
+        <div class="evidence-card"><strong>자동 성능 수치 없음</strong><p>자동화 테스트와 처리 시간 비교 자료는 남아 있지 않아 성능 향상이나 자동 검증 결과를 주장하지 않습니다.</p></div>
+      </div>
+      <p>모델 경로와 실행 환경이 로컬 설정에 의존합니다. 다른 환경에서 같은 결과를 재현하려면 모델, 경로, 테스트 데이터를 준비해야 합니다.</p>
+    </section>
+    <nav class="project-resources" aria-label="Webtoon Feedback 자료">
+      <span>더 살펴보기</span>
+      <a href="#post/webtoon-feedback-pipeline">분석 파이프라인과 라벨 범위 수정 ↗</a>
+      <a href="https://github.com/KIT452/webtoon_feedback" target="_blank" rel="noopener noreferrer">팀 저장소 ↗</a>
+      <a href="https://curved-approach-a38.notion.site/Team-Project-30236972eb504556bd153638cb58cb51" target="_blank" rel="noopener noreferrer">프로젝트 문서 ↗</a>
+    </nav>
+  </div>
+</article>

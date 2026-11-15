@@ -1,0 +1,125 @@
+<article class="project-case" id="case-spot-radar" data-project="spot-radar">
+  <div class="case-copy">
+    <h2>SPOT RADAR</h2>
+    <p class="project-lede">도시를 설명하는 숫자는 무수하지만, 어디를 먼저 살펴봐야 할지는 쉽게 드러나지 않습니다. 서울 상권의 지표와 소비 흐름을 나란히 놓아, 직접 발걸음을 옮길 후보를 좁혀가는 서비스입니다.</p>
+    <dl class="project-facts">
+      <div><dt>프로젝트</dt><dd>팀 프로젝트, 개인 후속 개선</dd></div>
+      <div><dt>기간</dt><dd>2026.09–10</dd></div>
+      <div><dt>기술</dt><dd>Python, FastAPI, Java, Spring Boot, PostgreSQL, Spring Cache, Gemini</dd></div>
+      <div><dt>결과물</dt><dd>상권 탐색, 상세 분석, 후보 비교 서비스</dd></div>
+    </dl>
+    <section class="project-overview" id="spot-overview">
+      <h3>프로젝트 개요</h3>
+      <p>매출 수치 하나만으로는 조사할 상권을 고르기 어렵습니다. 사용자는 업종과 지역, 분기를 정해 후보를 찾고 매출과 거래, 소비 패턴과 경쟁 신호를 살펴본 뒤 최대 세 곳을 비교합니다. SPOT RADAR는 입지를 대신 결정하지 않고, 실제 현장 조사 전에 검토할 후보와 근거를 모아 보여줍니다.</p>
+    </section>
+    <section class="project-features" id="spot-features">
+      <h3>사용자가 할 수 있는 일</h3>
+      <ul class="project-feature-list">
+        <li><strong>상권 후보 탐색</strong><p>업종과 자치구, 분기를 선택해 상권을 찾고 순위, 추천 이유, 위험 요소를 확인합니다.</p></li>
+        <li><strong>상세 지표 확인</strong><p>상권별 매출과 거래, 순위, 성장 정보 및 시간대와 연령, 요일별 소비 패턴을 살펴봅니다.</p></li>
+        <li><strong>후보 비교</strong><p>최대 세 곳을 골라 같은 지표를 나란히 비교합니다.</p></li>
+      </ul>
+    </section>
+    <section class="project-screens" aria-labelledby="spot-screens-title">
+      <h3 id="spot-screens-title">실제 화면</h3>
+      <p class="project-caption">탐색에서 후보 비교까지, 사용자가 상권을 좁혀 가는 화면 세 장입니다. 이미지를 선택하면 원본 크기로 열립니다.</p>
+      <div class="screen-gallery spot-screen-gallery">
+        <figure class="screen-shot spot-screen-shot">
+          <a href="assets/spot-radar-explore.jpg" target="_blank" rel="noopener noreferrer"><img src="assets/spot-radar-explore.jpg" alt="업종·지역·분기를 설정하고 추천 상권 목록과 탐색 점수를 보는 SPOT RADAR 탐색 화면" loading="lazy" decoding="async"></a>
+          <figcaption><strong>01 · 상권 탐색</strong><span>추천 기준과 후보 목록에서 먼저 살펴볼 상권을 고릅니다.</span></figcaption>
+        </figure>
+        <figure class="screen-shot spot-screen-shot">
+          <a href="assets/spot-radar-detail.jpg" target="_blank" rel="noopener noreferrer"><img src="assets/spot-radar-detail.jpg" alt="구산역 커피·음료 상권의 탐색 점수와 매출·시간대·연령·요일별 지표를 보는 상세 화면" loading="lazy" decoding="async"></a>
+          <figcaption><strong>02 · 상세 분석</strong><span>한 상권의 점수와 소비 패턴을 세부 지표로 확인합니다.</span></figcaption>
+        </figure>
+        <figure class="screen-shot spot-screen-shot">
+          <a href="assets/spot-radar-compare.jpg" target="_blank" rel="noopener noreferrer"><img src="assets/spot-radar-compare.jpg" alt="구산역과 봉은사역의 점수, 매출, 거래량, 소비 패턴을 나란히 비교하는 화면" loading="lazy" decoding="async"></a>
+          <figcaption><strong>03 · 후보 비교</strong><span>두 후보의 핵심 지표를 같은 표에서 비교해 현장 조사 대상을 좁힙니다.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+    <section class="project-architecture" aria-labelledby="spot-architecture-title">
+      <h3 id="spot-architecture-title">시스템 구조</h3>
+      <p class="project-caption">아래는 저장소의 프런트엔드 경로, FastAPI 라우터와 데이터 적재 코드를 따라 재구성한 시스템 구조입니다. 서비스 전체의 흐름을 설명하며, 개인 기여 범위와는 구분됩니다.</p>
+      <figure class="project-map spot-system-map" aria-labelledby="spot-system-map-title">
+        <figcaption id="spot-system-map-title">사용자 조회와 분기별 데이터 갱신을 분리해 봅니다</figcaption>
+        <section class="spot-system-lane" aria-label="사용자 요청 처리">
+          <h4>사용자 요청</h4>
+          <div class="spot-system-flow">
+            <div class="spot-system-node"><small>웹 화면</small><strong>React</strong><p>탐색, 상세, 비교 경로</p></div>
+            <span class="spot-system-arrow" aria-label="요청과 응답">↔</span>
+            <div class="spot-system-node"><small>API와 분석</small><strong>FastAPI</strong><p>상권 API와 추천 지표 계산</p></div>
+            <span class="spot-system-arrow" aria-label="데이터 조회">↔</span>
+            <div class="spot-system-node"><small>관계형 데이터</small><strong>PostgreSQL</strong><p>상권, 매출, 점포 정보</p></div>
+          </div>
+        </section>
+        <section class="spot-system-lane" aria-label="분기별 데이터 적재">
+          <h4>분기별 데이터 갱신</h4>
+          <div class="spot-system-flow spot-ingestion-flow">
+            <div class="spot-system-node"><small>원천 데이터</small><strong>서울 Open API</strong><p>분기별 매출과 점포 정보</p></div>
+            <span class="spot-system-arrow" aria-hidden="true">→</span>
+            <div class="spot-system-node"><small>적재 작업</small><strong>sync_quarterly.py</strong><p>매출과 점포 데이터 적재</p></div>
+            <span class="spot-system-arrow" aria-hidden="true">→</span>
+            <div class="spot-system-node"><small>저장소</small><strong>PostgreSQL</strong><p>동기화한 데이터 저장</p></div>
+          </div>
+          <p class="spot-system-note">GitHub Actions가 동기화 작업을 예약하거나 수동으로 시작합니다.</p>
+        </section>
+        <section class="spot-system-lane" aria-label="선택적 인사이트 생성">
+          <h4>선택적 인사이트 생성</h4>
+          <div class="spot-system-flow spot-insight-flow">
+            <div class="spot-system-node"><small>분석 API</small><strong>FastAPI</strong><p>검증된 지표를 바탕으로 결과 안내</p></div>
+            <span class="spot-system-arrow" aria-hidden="true">→</span>
+            <div class="spot-system-node"><small>설정이 켜져 있고 호출 성공</small><strong>Gemini 요약</strong><p>지표에 대한 자연어 설명</p></div>
+          </div>
+          <p class="spot-system-note">Gemini 연동이 꺼져 있거나 호출에 실패하면 규칙 기반 안내를 반환합니다.</p>
+        </section>
+      </figure>
+    </section>
+    <section class="project-contribution" id="spot-contribution">
+      <h3>제가 맡은 일</h3>
+      <div class="contribution-lanes">
+        <section><h4>팀 프로젝트 기여</h4><p>서울 Open API 데이터 적재와 upsert, Gemini 인사이트 수치 검증, DB 연결과 예외 처리, 회귀 테스트를 맡았습니다. 설계, API, 문제 분석을 다룬 프로젝트 문서 대부분은 AI의 도움을 받아 제가 작성했습니다. 초기 UI 뼈대에는 Stitch 시안을 바탕으로 Google AI Studio가 생성한 코드가 포함되어 있습니다.</p></section>
+        <section><h4>개인 후속 개선</h4><p>개인 저장소에서 기존 화면과 API 응답 형식을 유지하며 FastAPI를 Spring Boot로 옮겼습니다. Native SQL 결과는 필드 이름으로 읽는 Projection으로 바꾸고, 반복 조회는 메모리 캐시로 줄였습니다. 이 개선은 팀 프로젝트 기여와 구분해 기록했습니다.</p></section>
+      </div>
+    </section>
+    <section class="project-highlight" id="spot-query-case">
+      <h3>대표 개선 · 점수 계산과 화면 조회 범위를 분리</h3>
+      <p>추천 점수는 모집단 데이터를 바탕으로 계산하되, 화면에 표시할 상권 기본 정보는 상위 후보만 다시 조회하도록 바꿨습니다. 이 경계 덕분에 점수 계산에 필요한 데이터는 유지하면서 카드 표시용 조회를 줄였습니다.</p>
+      <figure class="portfolio-code project-code">
+        <figcaption>추천 결과에서 상위 7개 코드만 기본 상권 정보 조회로 넘깁니다.</figcaption>
+        <pre><code class="language-java">List&lt;String&gt; topCodes = population.stream()
+        .filter(row -&gt; row.explorationScore() != null)
+        .sorted(Comparator.comparing((MetricRow row) -&gt; row.explorationScore())
+                .reversed()
+                .thenComparing(row -&gt; row.tradeAreaCode()))
+        .limit(7)
+        .map(row -&gt; row.tradeAreaCode())
+        .toList();
+
+// 점수 계산용 모집단은 유지하고, 화면에 보여줄 기본 정보만 상위 후보로 제한합니다.
+areaByCode = areas.findAllById(topCodes).stream()
+        .collect(Collectors.toMap(
+                area -&gt; area.getCode(),
+                area -&gt; area));</code></pre>
+      </figure>
+      <div class="project-highlight-grid">
+        <section><strong>변경 전후</strong><p>추천 뒤 기본 상권 정보 조회량 평균이 1,650건에서 7건으로 줄었습니다. 지표 계산에 쓰는 모집단 전체를 7건으로 줄인 것은 아닙니다.</p></section>
+        <section><strong>측정 범위</strong><p>Repository 조회 구간과 API 응답을 분리해 확인했습니다. 조회 범위 개선과 캐시 적용은 서로 다른 단계에서 측정했습니다.</p></section>
+      </div>
+    </section>
+    <section class="project-evidence" id="spot-outcome">
+      <h3>확인한 결과와 배운 점</h3>
+      <div class="evidence-grid">
+        <div class="evidence-card"><strong>1,650건 → 7건</strong><p>추천 뒤 기본 상권정보를 조회한 평균 건수입니다. 지표 계산에 쓰는 모집단 조회까지 7건으로 줄었다는 의미는 아닙니다.</p></div>
+        <div class="evidence-card"><strong>29.7초 → 9.4초</strong><p>조회 범위 개선 전후 추천 API 평균 응답 시간입니다. 캐시 적용 결과와 분리해 측정했습니다.</p></div>
+        <div class="evidence-card"><strong>28.013초 → 1.877초</strong><p>Render 무료 단일 인스턴스에서 측정한 캐시 미적중과 적중 응답 시간입니다. TPS나 동시 처리량을 나타내는 값은 아닙니다.</p></div>
+      </div>
+      <p>처음 팀 작업에서는 일정이 촉박해 뷰 기반 처리와 Redis 같은 외부 캐시를 검토·구현하지 못했습니다. 후속 마이그레이션에서는 Redis 사용 경험이 적고 Render 무료 인스턴스 하나에서 변경을 작게 유지하려고 Spring Cache의 메모리 구현을 택했습니다. 별도 캐시 서버 없이 반복 데이터를 재사용하는 대신, 프로세스 재시작 때 비워지고 현재 구현에는 TTL·크기 제한·무효화 경로가 없습니다. 측정 조건과 판단 과정은 상세 글에 정리했습니다.</p>
+    </section>
+    <nav class="project-resources" aria-label="SPOT RADAR 자료">
+      <span>더 살펴보기</span>
+      <a href="#post/spot-radar-spring-migration">Spring Boot 마이그레이션과 조회 비용 개선 ↗</a>
+      <a href="https://github.com/team-ttobagi/seoul-data-analysis" target="_blank" rel="noopener noreferrer">팀 저장소 ↗</a>
+    </nav>
+  </div>
+</article>

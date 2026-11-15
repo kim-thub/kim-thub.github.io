@@ -1,15 +1,17 @@
 # 김수빈 웹 포트폴리오
 
-GitHub Pages용 정적 사이트입니다. `site/index.html`에 홈과 네 프로젝트 상세 화면이 함께 들어 있습니다. 이전 프로젝트 URL은 새 화면으로 이동합니다. 서버나 빌드는 필요하지 않습니다.
+GitHub Pages로 배포하는 Paper Collage Archive입니다. 디자인과 인터랙션은 `index.html`에, 프로젝트 화면과 블로그 이미지 등 로컬 자료는 `assets/`에 있습니다.
 
-## 색상
+## 프로젝트와 글 수정
 
-`site/index.html` 첫 번째 `<style>`의 `:root`에서 `--accent`와 `--soft`를 바꾸면 강조색과 옅은 강조색이 함께 바뀝니다. 공개 화면에는 색상 변경 버튼을 두지 않았습니다. 제출처마다 색상을 바꿀 때는 이 두 변수의 대비를 확인하세요.
+- 프로젝트 원고는 `content/projects/`에서 수정합니다.
+- 블로그 글은 `content/first-post.md`와 `content/posts/`에서 Markdown으로 관리합니다. 현재는 글 9개를 공개합니다.
+- 프로젝트 원고 수정 뒤 `python3 scripts/build_projects.py`, 블로그 글 수정 뒤 `python3 scripts/build_blog.py`를 실행하면 `index.html`에 반영됩니다.
+- 로컬 빌드는 `python3 -m pip install -r requirements-build.txt`로 준비합니다.
+- 회귀 검사는 `python3 -m unittest discover -s tests -v`로 실행합니다.
 
-## 사운드
+## 공개 배포
 
-헤더의 스피커 아이콘으로 소리를 켜고 끕니다. 기본값은 꺼짐이며 선택 상태를 브라우저에 저장합니다. 활성화, 프로젝트 진입·복귀, Before/After 전환, 상세 비교·차단 상태에 각각 짧은 소리가 납니다. 소리는 Web Audio API로 생성하고 외부 파일을 불러오지 않습니다. 브라우저 정책상 아이콘을 누른 뒤부터 재생됩니다. 스크롤, 호버, 외부 링크에는 소리를 넣지 않았습니다.
+원고를 바꾼 뒤 해당 빌드 스크립트를 실행하고 생성된 `index.html`을 함께 커밋합니다. `main`에 변경을 반영하면 `.github/workflows/pages.yml`이 회귀 검사를 실행한 뒤, 커밋된 `index.html`, `assets/`, 이전 프로젝트 주소용 리디렉션만 GitHub Pages에 배포합니다. 작업 문서와 원고 파일은 페이지 정적 산출물에 포함되지 않습니다.
 
-## 검증과 배포
-
-저장소 루트에서 `python3 scripts/check_site.py`로 링크를 확인합니다. 페이지의 JavaScript는 Node의 `--check`로 문법을 검사할 수 있습니다. `main`에 반영되면 GitHub Actions가 검사 후 `site/`를 GitHub Pages에 게시합니다.
+기존 프로젝트 주소도 유지합니다. `/projects/spot-radar/`, `/projects/starter-kit/`, `/projects/inheritance-guide/`, `/projects/taskflow/`, `/projects/webtoon/`, `/projects/job-process-automation/`은 해당 프로젝트 상세 화면으로 이동합니다.

@@ -21,16 +21,35 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Check out repository
         uses: actions/checkout@v6
-      - name: Check internal links
-        run: python3 scripts/check_site.py
-      - name: Configure Pages
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the static-site build dependency
+        run: python -m pip install -r requirements-build.txt
+
+      - name: Run portfolio regression tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Upload static site
+
+      - name: Prepare static Pages artifact
+        run: |
+          mkdir -p _site
+          cp index.html _site/index.html
+          cp -R assets _site/assets
+          cp -R projects _site/projects
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: site
-      - name: Deploy
+          path: _site
+
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
