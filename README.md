@@ -5,7 +5,7 @@ GitHub Pages로 배포하는 Paper Collage Archive입니다. 디자인과 인터
 ## 프로젝트와 글 수정
 
 - 프로젝트 원고는 `content/projects/`에서 수정합니다.
-- 블로그 글은 `content/first-post.md`와 `content/posts/`에서 Markdown으로 관리합니다. 현재는 글 9개를 공개합니다.
+- 블로그 글은 `content/first-post.md`와 `content/posts/`에서 Markdown으로 관리합니다. 현재는 글 10개를 공개합니다.
 - 프로젝트 원고 수정 뒤 `python3 scripts/build_projects.py`, 블로그 글 수정 뒤 `python3 scripts/build_blog.py`를 실행하면 `index.html`에 반영됩니다.
 - 로컬 빌드는 `python3 -m pip install -r requirements-build.txt`로 준비합니다.
 - 회귀 검사는 `python3 -m unittest discover -s tests -v`로 실행합니다.
