@@ -4,7 +4,6 @@ title: SPOT RADAR의 Spring Boot 마이그레이션과 조회 비용 개선
 slug: spot-radar-spring-migration
 excerpt: 기존 API 계약을 유지하면서 요청 시간과 SQL 실행 시간을 나눠 측정하고, 상권 기본 정보 조회와 반복 데이터 조회를 줄인 과정입니다.
 ---
-
 # SPOT RADAR의 Spring Boot 마이그레이션과 조회 비용 개선
 
 SPOT RADAR 팀 프로젝트의 초기 API는 FastAPI로 구현했습니다. 이후 개인 작업으로 기존 화면과 데이터베이스를 유지하면서 백엔드를 Spring Boot로 전환했습니다. 응답이 느려지는 원인을 찾기 위해 요청 처리 시간과 데이터 조회 시간을 나눠 측정하고, 불필요한 조회를 줄였습니다.
@@ -41,8 +40,6 @@ areaByCode = areas.findAllById(topCodes).stream()
 
 이렇게 점수 계산용 행과 추가 설명을 위해 읽는 상권 기본 정보를 분리했습니다.
 
-실제 코드: [AnalyticsService.recommendations()](https://github.com/kim-thub/seoul-data-analysis), SalesRepository Projection SQL
-
 | 측정 항목                        | 변경 전    | 변경 후   |
 | ---------------------------- | ------- | ------ |
 | 기본 추천 상권 정보 조회량 평균           | 1,650건  | 7건     |
@@ -63,13 +60,3 @@ areaByCode = areas.findAllById(topCodes).stream()
 메모리 캐시는 별도 서버가 필요하지 않지만, 애플리케이션을 재시작하면 저장된 데이터가 사라집니다. 당시 구현에는 자동 만료나 데이터 변경 시 캐시를 갱신하는 기능도 없었습니다. 단일 인스턴스 환경이었기 때문에 서버 간 데이터 동기화는 고려하지 않았습니다.
 
 중복 로직을 함수로 묶으면 수정과 테스트가 쉬워집니다. 하지만 여러 API가 같은 데이터를 반복 조회한다면 함수를 공유하는 것만으로는 사용자의 대기 시간이 줄지 않습니다. 이번에는 캐시 적중 시 공통 모집단 데이터를 재사용해 반복 조회를 줄였습니다.
-
-## 확인 가능한 팀 프로젝트 근거
-
-- [적재와 upsert PR #49](https://github.com/team-ttobagi/seoul-data-analysis)
-- AI 응답 검증 PR #68
-- 인사이트 정책 PR #121
-- 수치 검증과 DB 오류 PR #154
-- 팀 저장소
-
-개인 Spring Boot 마이그레이션 저장소와 성능 로그는 비공개입니다. 공개 PR은 팀 프로젝트 기여를, 성능 로그는 개인 후속 개선을 보여주는 자료로 구분합니다.
