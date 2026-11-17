@@ -26,7 +26,7 @@ PROJECT_INDEX = [
     ("github-taskflow", "GitHub Taskflow", "개인 프로젝트 · 2026.09", PROJECT_BLURBS["github-taskflow"]),
     ("job-process-automation", "Job Process Automation", "개인 프로젝트 · 2026.07", PROJECT_BLURBS["job-process-automation"]),
     ("webtoon-feedback", "Webtoon Feedback", "팀 프로젝트 · 2024.03–06", PROJECT_BLURBS["webtoon-feedback"]),
-    ("inheritance-guide", "상속길잡이", "팀 예제 서비스 · 2026.10–11.04", PROJECT_BLURBS["inheritance-guide"]),
+    ("inheritance-guide", "상속길잡이", "팀 프로젝트 · 2026.10–11", PROJECT_BLURBS["inheritance-guide"]),
 ]
 STYLE_START = "/* project-content-v3:start */"
 STYLE_END = "/* project-content-v3:end */"
