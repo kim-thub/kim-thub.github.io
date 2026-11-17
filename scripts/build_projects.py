@@ -21,7 +21,7 @@ PROJECT_BLURBS = {
     "job-process-automation": "채용 메일을 지원 기록으로 연결",
 }
 PROJECT_INDEX = [
-    ("starter-kit", "AI Starter Kit", "팀 개발 기반 · 2026.10–11.04", PROJECT_BLURBS["starter-kit"]),
+    ("starter-kit", "AI Starter Kit", "팀 프로젝트 · 2026.10–11", PROJECT_BLURBS["starter-kit"]),
     ("spot-radar", "SPOT RADAR", "팀 프로젝트 · 2026.09–10", PROJECT_BLURBS["spot-radar"]),
     ("github-taskflow", "GitHub Taskflow", "개인 프로젝트 · 2026.09", PROJECT_BLURBS["github-taskflow"]),
     ("job-process-automation", "Job Process Automation", "개인 프로젝트 · 2026.07", PROJECT_BLURBS["job-process-automation"]),
