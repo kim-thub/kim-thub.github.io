@@ -58,7 +58,7 @@ class Phase3ArchiveUXTests(unittest.TestCase):
         match = re.search(r'<script id="blog-posts-data" type="application/json">(.*?)</script>', self.html, re.S)
         self.assertIsNotNone(match)
         source_posts = [path for path in (ROOT / "content" / "posts").glob("*.md") if path.name != "README.md"]
-        self.assertEqual(len(json.loads(match.group(1))), len(source_posts) + 1)
+        self.assertEqual(len(json.loads(match.group(1))), len(source_posts))
 
 
 if __name__ == "__main__":

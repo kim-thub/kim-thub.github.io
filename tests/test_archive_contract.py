@@ -54,7 +54,9 @@ class ArchiveContractTests(unittest.TestCase):
         self.assertIsNotNone(match)
         posts = json.loads(match.group(1))
         source_posts = [path for path in (ROOT / "content" / "posts").glob("*.md") if path.name != "README.md"]
-        self.assertEqual(len(posts), len(source_posts) + 1)
+        self.assertEqual(len(posts), len(source_posts))
+        self.assertIn(ROOT / "content" / "posts" / "spring-boot-coupon-lock-wait-apm.md", source_posts)
+        self.assertIn("first-post", {post["slug"] for post in posts})
 
     def test_archive_navigation_has_accessibility_basics(self):
         self.assertRegex(self.html, r'<a[^>]+class="skip-link"[^>]+href="#main-content"')
