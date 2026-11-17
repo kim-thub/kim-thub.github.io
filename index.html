@@ -1944,7 +1944,9 @@ body[data-archive-art-played="true"] .maker-world{
 </article></template><template id="tpl-github-taskflow"><article class="project-case" id="case-github-taskflow" data-project="github-taskflow">
   <div class="case-copy">
     <h2>GitHub Taskflow</h2>
-    <p class="project-lede">작업을 옮겨가는 사이에도 잃어버려서는 안 되는 것들이 있습니다. 아직 끝나지 않은 변경을 보호하고, 다음 작업으로 안전하게 넘어갈 수 있도록 Git의 상태를 살피는 Python CLI와 자동화 스킬을 만들었습니다.</p>
+    <p class="project-lede">작업을 옮겨가는 사이에도 잃어버려서는 안 되는 것들이 있습니다.</p>
+    <p>아직 끝나지 않은 변경을 보호하고 다음 작업으로 안전하게 넘어갈 수 있도록 Git의 상태를 살피는 Python CLI와 자동화 스킬을 만들었습니다.</p>
+    <h3>프로젝트 정보</h3>
     <dl class="project-facts">
       <div><dt>프로젝트</dt><dd>개인 프로젝트, 기획, 구현, 검증</dd></div>
       <div><dt>기간</dt><dd>2026.09</dd></div>
@@ -1963,7 +1965,9 @@ body[data-archive-art-played="true"] .maker-world{
         <li><strong>검증과 PR</strong><p>정해진 검사와 선택한 stage, commit, push, PR 단계를 이어갑니다. 상태가 불분명하면 파일을 바꾸기 전에 사용자에게 확인을 요청합니다.</p></li>
       </ul>
     </section>
-    <figure class="project-map taskflow-map" id="taskflow-flow" aria-labelledby="taskflow-flow-title">
+    <section class="project-architecture" aria-labelledby="taskflow-flow-heading">
+      <h3 id="taskflow-flow-heading">작업 흐름도</h3>
+      <figure class="project-map taskflow-map" id="taskflow-flow" aria-labelledby="taskflow-flow-title">
       <figcaption id="taskflow-flow-title">기준 브랜치와 작업 트리가 안전할 때만 변경사항을 이어갑니다</figcaption>
       <div class="taskflow-path">
         <div class="taskflow-step"><small>시작</small><strong>GitHub 이슈 선택</strong><p>새 작업의 기준을 정합니다.</p></div>
@@ -1979,18 +1983,19 @@ body[data-archive-art-played="true"] .maker-world{
         </section>
       </div>
     </figure>
+    </section>
     <section class="project-contribution" id="taskflow-contribution">
-      <h3>제가 맡은 일</h3>
-      <p>협업 중 반복되던 인계 절차를 워크플로 스킬과 Python 런타임으로 구현했습니다. 기준 브랜치의 원격 이력과 작업 트리 상태를 확인해 변경사항을 이어갈 수 있는 조건을 정했습니다. 현재 변경사항을 자동으로 stage하거나 강제로 reset하지 않으며, 안전한 상태인지 설명할 수 없으면 실행을 중단합니다.</p>
+      <h3>구현한 기능</h3>
+      <p>협업 중 반복되던 인계 절차를 워크플로 스킬과 Python 런타임으로 구현했습니다. 기준 브랜치의 원격 이력과 작업 트리 상태를 확인해 변경사항을 이어갈 수 있는 조건을 정하고, 현재 변경사항을 자동으로 stage하거나 강제로 reset하지 않게 했습니다. 또한, 안전한 상태인지 확인할 근거가 없으면 작업을 변경하지 않고 중단하도록 했습니다.</p>
     </section>
     <section class="project-highlight" id="taskflow-decision">
-      <h3>선택한 안전 기준 · 확실하지 않으면 변경하지 않습니다</h3>
-      <p>이 도구의 자동화 범위는 브랜치 전환 자체보다 현재 작업을 다른 이슈의 PR에 섞지 않는 데 맞췄습니다. 기준 원격 브랜치가 확인되고 현재 HEAD가 그 이력에 속하는지 검사한 다음에만 변경사항을 이어갑니다.</p>
+      <h3>확실하지 않으면 변경하지 않습니다</h3>
+      <p>이 도구의 자동화 범위는 브랜치 전환 자체보다 현재 작업을 다른 이슈의 PR에 섞지 않는 데 집중했습니다. 기준 원격 브랜치가 확인되고 현재 HEAD가 그 이력에 속하는지 검사한 다음에만 변경사항을 이어갑니다.</p>
       <div class="project-highlight-grid">
         <section><strong>조건이 확인되면 진행</strong><p>원격 기준 브랜치와 Git 이력이 예상한 상태라면 현재 파일 변경을 보존해 새 작업 흐름으로 넘기고 검사·PR 단계로 이어갑니다.</p></section>
         <section><strong>상태가 모호하면 중단</strong><p>원격 기준이 없거나 현재 커밋이 기준 브랜치의 이력이 아니면 자동 이동하지 않습니다. 작업 파일·Stage·커밋을 그대로 두고 사용자가 먼저 확인하게 합니다.</p></section>
       </div>
-      <p>자동으로 복구해 주는 편의는 줄었지만, 로컬 커밋이나 다른 브랜치의 작업이 새 PR에 섞일 가능성을 낮춥니다. 실제 Git 상태를 사용한 검증은 아래에 따로 표시했습니다.</p>
+      <p>자동으로 복구해 주는 편의는 줄었지만, 로컬 커밋이나 다른 브랜치의 작업이 새 PR에 섞일 가능성을 낮춥니다.</p>
     </section>
     <section class="project-evidence" id="taskflow-outcome">
       <h3>검증과 배운 점</h3>
@@ -1999,12 +2004,12 @@ body[data-archive-art-played="true"] .maker-world{
         <div class="evidence-card"><strong>테스트 18개</strong><p>파일 변경 보존, 기준 브랜치 보호, 위험 상태에서의 중단을 다뤘습니다.</p></div>
       </div>
       <p>Python 컴파일 검사와 테스트는 GitHub Actions에서 통과했습니다. 외부 GitHub 호출만 fake CLI로 대체했으므로 인증 오류와 네트워크 장애는 검증 범위에 포함되지 않습니다.</p>
-      <p>자동화는 단계를 줄이는 것만으로 안전해지지 않았습니다. 실행 전에 기준 브랜치와 이력을 확인하고, 예상하지 못한 상태에서 멈추는 조건을 함께 정해야 했습니다.</p>
+      <p>정상적인 작업 흐름뿐 아니라 기준 브랜치나 커밋 이력이 예상과 다른 상황도 테스트했습니다. 자동화를 구현하면서 가장 신경 쓴 것은 어떤 작업을 대신할지보다는 어떤 상황에서 실행을 멈춰야 할지 정하는 일이었습니다.</p>
     </section>
     <nav class="project-resources" aria-label="GitHub Taskflow 자료">
       <span>더 살펴보기</span>
       <a href="#post/github-taskflow-safe-workflow">안전한 Git 작업 흐름과 검증 ↗</a>
-      <a href="https://github.com/kim-thub/github-taskflow-skill" target="_blank" rel="noopener noreferrer">저장소 ↗</a>
+      <a href="https://github.com/kim-thub/github-taskflow-skill" target="_blank" rel="noopener noreferrer">GitHub Taskflow 저장소 ↗</a>
     </nav>
   </div>
 </article></template><template id="tpl-webtoon-feedback"><article class="project-case" id="case-webtoon-feedback" data-project="webtoon-feedback">
