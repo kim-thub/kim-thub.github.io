@@ -13,14 +13,9 @@ from pygments.util import ClassNotFound
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML_FILE = ROOT / "index.html"
-FIRST_POST = ROOT / "content" / "first-post.md"
 POSTS_DIR = ROOT / "content" / "posts"
 DATA_PATTERN = re.compile(
     r'<script id="blog-posts-data" type="application/json">.*?</script>',
-    re.DOTALL,
-)
-FIRST_POST_TEMPLATE_PATTERN = re.compile(
-    r'<template id="post-template-first-post">.*?</template>',
     re.DOTALL,
 )
 CODE_FENCE_PATTERN = re.compile(r"(?m)^\s*```([\w+-]*)\s*\n(.*?)^\s*```\s*(?=\n|$)", re.DOTALL)
@@ -97,20 +92,8 @@ def page_relative_links(markdown: str, source: Path):
 
 
 def post_entries():
-    if not FIRST_POST.exists():
-        raise FileNotFoundError(FIRST_POST)
-    first_text = FIRST_POST.read_text(encoding="utf-8")
-    first_title = next((line[2:].strip() for line in first_text.splitlines() if line.startswith("# ")), "첫 번째 글")
-    entries = [{
-        "index_order": 2,
-        "slug": "first-post",
-        "title": first_title,
-        "excerpt": "하나의 응답 시간에는 서로 다른 기다림이 겹쳐 있습니다. 쿠폰 발급 요청의 흐름을 따라가며 PostgreSQL의 잠금 대기를 확인하고, 관측한 숫자가 말해주는 것과 끝내 설명하지 못하는 것의 경계를 기록했습니다.",
-        "kind": "markdown",
-        "markdown": page_relative_links(first_text, ROOT / "first-post.md"),
-        "codeBlocks": highlighted_code_blocks(first_text),
-    }]
-    seen = {"first-post"}
+    entries = []
+    seen = set()
     for source in sorted(POSTS_DIR.glob("*.md")):
         if source.name.lower() == "readme.md":
             continue
@@ -152,7 +135,6 @@ def main():
     updated, count = DATA_PATTERN.subn(lambda _: block, original, count=1)
     if count != 1:
         raise RuntimeError(f"블로그 데이터 영역을 찾지 못했습니다: {HTML_FILE.name}")
-    updated, _ = FIRST_POST_TEMPLATE_PATTERN.subn("", updated, count=1)
     HTML_FILE.write_text(updated, encoding="utf-8")
     print(f"블로그 {len(entries)}개를 {HTML_FILE.name}에 반영했습니다.")
 
