@@ -1388,14 +1388,14 @@ body[data-archive-art-played="true"] .maker-world{
 .portfolio-code{position:relative;width:100%;max-width:100%;}
 .portfolio-code pre:focus-visible{outline:3px solid var(--accent-strong,#a42d49);outline-offset:3px;}
 @media (min-width:851px){
- .portfolio-code{--code-expand-width:min(1000px,max(100%,calc(100vw - 351px)));transition:width .2s ease,box-shadow .2s ease;}
+ .portfolio-code{--code-expand-width:min(1000px,max(100%,calc(100vw - 400px)));transition:width .2s ease,box-shadow .2s ease;}
  .portfolio-code:focus-within{z-index:30;width:var(--code-expand-width);max-width:none;box-shadow:8px 10px 0 #46365724;}
 }
 @media (min-width:851px) and (hover:hover) and (pointer:fine){
  .portfolio-code:hover{z-index:30;width:var(--code-expand-width);max-width:none;box-shadow:8px 10px 0 #46365724;}
 }
-@media (min-width:1221px){
- .portfolio-code{--code-expand-width:min(1000px,max(100%,calc(50vw + 260px)));}
+@media (min-width:1236px){
+ .portfolio-code{--code-expand-width:min(1000px,max(100%,calc(50vw + 218px)));}
 }
 @media (max-width:850px){
  .portfolio-code:hover,.portfolio-code:focus-within{width:100%;max-width:100%;box-shadow:none;}

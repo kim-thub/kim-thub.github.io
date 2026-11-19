@@ -35,8 +35,8 @@ class Phase4MicroInteractionTests(unittest.TestCase):
         self.assertIn('@media (min-width:851px) and (hover:hover) and (pointer:fine)', CSS)
         self.assertIn('.portfolio-code:hover{', CSS)
         self.assertIn('.portfolio-code:focus-within{', CSS)
-        self.assertIn('calc(100vw - 351px)', CSS)
-        self.assertIn('calc(50vw + 260px)', CSS)
+        self.assertIn('calc(100vw - 400px)', CSS)
+        self.assertIn('calc(50vw + 218px)', CSS)
         self.assertIn('min(1000px', CSS)
         self.assertIn('.portfolio-code pre:focus-visible', CSS)
 
