@@ -304,20 +304,27 @@ PROJECT_CSS = r"""
 .project-reader .project-facts dt{font-size:10px;letter-spacing:.13em}
 .project-reader .project-facts dd{margin-top:6px;font-size:14px;line-height:1.7}
 
-/* Blog: a compact title index above an ordinary card archive. */
+/* Blog: a paged reading list that keeps the archive's notebook character. */
 .diary-index{display:block;padding:0;border:0}
-.diary-title-index{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;margin:0 0 32px;padding:0;border-top:1px solid var(--line-strong);list-style:none}
+.diary-list-toolbar{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:0 5px 14px;border-bottom:1px solid var(--line-strong)}
+.diary-list-count{margin:0;color:var(--ink-soft);font:700 14px/1.5 var(--sans)}
+.diary-sort-control{display:flex;align-items:center;gap:10px;color:var(--ink-soft);font:700 14px/1.5 var(--sans)}
+.diary-sort-control select{min-width:230px;min-height:42px;padding:8px 34px 8px 12px;appearance:none;border:1px solid var(--line-strong);border-radius:0;background-color:var(--paper-white);background-image:linear-gradient(45deg,transparent 50%,var(--accent-strong)50%),linear-gradient(135deg,var(--accent-strong)50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px;background-repeat:no-repeat;color:var(--ink);font:700 14px/1.3 var(--sans);cursor:pointer}
+.diary-sort-control select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.diary-title-index{display:block;margin:0;padding:0;border:0;list-style:none}
 .diary-title-index li{min-width:0;border-bottom:1px solid var(--line)}
-.diary-title-index a{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:baseline;gap:10px;padding:11px 4px;color:var(--ink);text-decoration:none}
+.diary-title-index a{display:block;padding:17px 8px;color:var(--ink);text-decoration:none;transition:background-color .18s ease,padding .18s ease}
+.diary-title-index a:hover{padding-left:14px;background:var(--paper-sand)}
 .diary-title-index a:hover .diary-title-index__title{color:var(--accent-strong);text-decoration:underline;text-underline-offset:4px}
-.diary-title-index__number{color:var(--accent-strong);font:800 10px/1.5 var(--mono);letter-spacing:.1em}
-.diary-title-index__title{min-width:0;font:700 14px/1.5 var(--sans);overflow-wrap:anywhere}
-.diary-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 18px;padding:0}
-.diary-entry{min-height:205px}
-.diary-entry:first-child{grid-column:auto;min-height:205px;padding:17px 18px 15px;border-left:1px solid var(--line)}
-.diary-entry__format{display:none!important}
-.diary-entry__title{font-size:clamp(17px,2vw,22px)}
-.diary-entry__read{margin-top:auto}
+.diary-title-index a:focus-visible{outline:3px solid var(--accent);outline-offset:-3px;background:var(--paper-sand)}
+.diary-title-index__title{display:block;min-width:0;font:700 15px/1.65 var(--sans);overflow-wrap:anywhere}
+.diary-pagination{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px;margin:22px 0 0;padding:0}
+.diary-pagination[hidden]{display:none}
+.diary-page-button{display:inline-flex;min-width:42px;min-height:42px;align-items:center;justify-content:center;padding:0 12px;border:1px solid var(--line-strong);background:var(--paper-white);color:var(--ink);font:700 14px/1.2 var(--sans);cursor:pointer;transition:background-color .15s,color .15s,box-shadow .15s}
+.diary-page-button:hover:not(:disabled),.diary-page-button:focus-visible{background:var(--paper-sand);border-color:var(--accent);outline:0}
+.diary-page-button[aria-current=page]{border-color:var(--accent-strong);background:var(--accent-strong);color:var(--white);box-shadow:3px 4px 0 var(--shadow-soft)}
+.diary-page-button:disabled{opacity:.52;cursor:not-allowed}
+.diary-page-ellipsis{display:inline-flex;min-width:22px;min-height:42px;align-items:center;justify-content:center;color:var(--ink-soft);font:600 15px/1 var(--sans)}
 
 /* About keeps personal fragments separate from project and CV details. */
 .ed-profile-pull small{letter-spacing:.14em}
@@ -335,8 +342,13 @@ PROJECT_CSS = r"""
  .ed-home-hero--specimen .ed-still-life{min-height:clamp(270px,65vw,420px)}
 }
 @media(max-width:700px){
- .diary-title-index{grid-template-columns:minmax(0,1fr)}
- .diary-card-grid{grid-template-columns:minmax(0,1fr)}
+ .diary-list-toolbar{align-items:flex-start;flex-direction:column;gap:10px}
+ .diary-sort-control{width:100%;justify-content:space-between}
+ .diary-sort-control select{min-width:0;max-width:72%;flex:1}
+ .diary-title-index a{padding:15px 4px}
+ .diary-title-index__title{font-size:14px}
+ .diary-page-button{min-width:38px;min-height:38px;padding:0 10px}
+ .diary-page-ellipsis{min-height:38px}
  .project-reader .project-facts{grid-template-columns:minmax(0,1fr);padding:14px}
  .ed-profile-learning .ed-learning-list{grid-template-columns:minmax(0,1fr)}
 }
@@ -394,18 +406,9 @@ pre,pre *,code,code *{font-family:ui-monospace,"SFMono-Regular",Consolas,monospa
 .project-reader .project-facts dt{color:var(--accent-strong);font-size:12px;font-weight:850;line-height:1.5;letter-spacing:.05em}
 .project-reader .project-facts dd{margin:0;font-size:15px;line-height:1.75;overflow-wrap:anywhere}
 
-/* A full-width numbered title list and, below it, equal two-column cards. */
+/* The page controls stay quiet so the notebook list remains the focus. */
 .ed-blog-head::after{content:"NOTES"}
 .diary-index{display:block;padding:0;border:0}
-.diary-title-index{display:block;margin:0 0 29px;padding:0;border-top:1px solid var(--line-strong);list-style:none}
-.diary-title-index li{border-bottom:1px solid var(--line)}
-.diary-title-index a{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:20px;align-items:baseline;padding:14px 5px}
-.diary-title-index__title{font-size:15px;font-weight:700;line-height:1.65;min-width:0}
-.diary-title-index__number{justify-self:end;font-size:12px;line-height:1.65;color:var(--accent-strong)}
-.diary-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px}
-.diary-entry,.diary-entry:first-child{grid-column:auto;min-height:210px;padding:19px 20px 17px;border:1px solid var(--line);border-top:3px solid var(--accent)}
-.diary-entry::before{display:none}
-.diary-entry__title{font-size:clamp(18px,2vw,22px)}
 
 /* Career and credentials first; personality in the bottom margin. */
 .profile-archive-sheet{max-width:1050px}
@@ -446,7 +449,7 @@ pre,pre *,code,code *{font-family:ui-monospace,"SFMono-Regular",Consolas,monospa
  .project-reader .project-facts{padding:5px 16px}
  .project-reader .project-facts>div{grid-template-columns:minmax(0,1fr);gap:4px;padding:13px 0}
  .project-reader .project-facts dd{font-size:14px}
- .diary-card-grid,.profile-archive-sheet .ed-about-personal .ed-profile-columns{grid-template-columns:minmax(0,1fr)}
+ .profile-archive-sheet .ed-about-personal .ed-profile-columns{grid-template-columns:minmax(0,1fr)}
  .ed-home-links{grid-template-columns:repeat(2,minmax(0,1fr))}
  .ed-home-link:last-child{grid-column:1/-1}
 }
@@ -456,8 +459,6 @@ pre,pre *,code,code *{font-family:ui-monospace,"SFMono-Regular",Consolas,monospa
  .ed-home-link{min-height:100px}
  .ed-home-hero--specimen{padding:7px}
  .ed-home-hero--specimen .ed-collage-stage{aspect-ratio:1/1}
- .diary-title-index a{gap:10px;padding:12px 1px}
- .diary-title-index__title{font-size:13px;line-height:1.6}
  .ed-about-records li{grid-template-columns:minmax(0,1fr)}
  .ed-about-records time{grid-column:auto}
  .ed-about-facts>section{padding:17px 15px}

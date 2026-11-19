@@ -7,41 +7,91 @@
  const blogDataNode=document.getElementById('blog-posts-data');
  const posts=blogDataNode?JSON.parse(blogDataNode.textContent):[];
  const postTemplates=Object.fromEntries(posts.filter(p=>p.template).map(p=>[p.slug,document.getElementById(p.template)]));
+ const blogPageSize=10;
+ let blogSortDirection='desc';
+ let blogCurrentPage=1;
  const pageNames=['home','about','projects','blog'];
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- function addPostCards(){
-  const target=document.querySelector('[data-post-list]');
-  if(!target)return;
-  target.replaceChildren();
-
-  const titleIndex=document.createElement('ol');
-  titleIndex.className='diary-title-index';
-  const cards=document.createElement('div');
-  cards.className='diary-card-grid';
-
-  posts.forEach(post=>{
+ function blogPageTokens(current,total){
+  if(total<7)return Array.from({length:total},(_,index)=>index+1);
+  if(current<=3)return [1,2,3,4,'ellipsis',total];
+  if(current>=total-2)return [1,'ellipsis',total-3,total-2,total-1,total];
+  return [1,'ellipsis',current-1,current,current+1,'ellipsis',total];
+ }
+ function renderBlogArchive(restorePageFocus=false){
+  const list=document.querySelector('[data-post-list]');
+  const pagination=document.querySelector('[data-blog-pagination]');
+  const count=document.querySelector('[data-blog-count]');
+  if(!list||!pagination)return;
+  const ordered=blogSortDirection==='asc'?posts:[...posts].reverse();
+  const totalPages=Math.ceil(ordered.length/blogPageSize);
+  blogCurrentPage=Math.min(Math.max(blogCurrentPage,1),Math.max(totalPages,1));
+  const start=(blogCurrentPage-1)*blogPageSize;
+  const pagePosts=ordered.slice(start,start+blogPageSize);
+  list.replaceChildren();
+  pagePosts.forEach(post=>{
    const title=post.title||'제목 없는 글';
-   const excerpt=post.excerpt||'';
-
-   const indexItem=document.createElement('li');
-   const indexLink=document.createElement('a');
-   indexLink.href='#post/'+encodeURIComponent(post.slug);
-   indexLink.setAttribute('aria-label','글 열기: '+title);
-   indexLink.innerHTML='<span class="diary-title-index__title">'+esc(title)+'</span>';
-   indexItem.append(indexLink);
-   titleIndex.append(indexItem);
-
-   const card=document.createElement('a');
-   card.href='#post/'+encodeURIComponent(post.slug);
-   card.className='diary-entry';
-   card.setAttribute('aria-label','기록 열기: '+title);
-   card.innerHTML='<strong class="diary-entry__title">'+esc(title)+'</strong>'+
-    '<span class="diary-entry__excerpt">'+esc(excerpt)+'</span>'+
-    '<span class="diary-entry__read">READ NOTE <span aria-hidden="true">↗</span></span>';
-   cards.append(card);
+   const item=document.createElement('li');
+   const link=document.createElement('a');
+   const titleNode=document.createElement('span');
+   link.href='#post/'+encodeURIComponent(post.slug);
+   link.setAttribute('aria-label','글 열기: '+title);
+   titleNode.className='diary-title-index__title';
+   titleNode.textContent=title;
+   link.append(titleNode);
+   item.append(link);
+   list.append(item);
   });
-
-  target.append(titleIndex,cards);
+  if(count){
+   count.textContent=pagePosts.length
+    ?`전체 ${ordered.length}개 글 · ${start+1}–${start+pagePosts.length} 표시`
+    :'아직 게시된 글이 없습니다.';
+  }
+  pagination.replaceChildren();
+  pagination.hidden=totalPages<=1;
+  if(totalPages>1){
+   const addButton=(label,page,ariaLabel,isCurrent=false,disabled=false)=>{
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='diary-page-button';
+    button.textContent=label;
+    button.dataset.blogPage=String(page);
+    button.setAttribute('aria-label',ariaLabel);
+    if(isCurrent)button.setAttribute('aria-current','page');
+    button.disabled=disabled;
+    pagination.append(button);
+   };
+   addButton('이전',blogCurrentPage-1,'이전 페이지',false,blogCurrentPage===1);
+   blogPageTokens(blogCurrentPage,totalPages).forEach(token=>{
+    if(token==='ellipsis'){
+     const gap=document.createElement('span');
+     gap.className='diary-page-ellipsis';
+     gap.setAttribute('aria-hidden','true');
+     gap.textContent='…';
+     pagination.append(gap);
+    }else addButton(String(token),token,`페이지 ${token}`,token===blogCurrentPage);
+   });
+   addButton('다음',blogCurrentPage+1,'다음 페이지',false,blogCurrentPage===totalPages);
+  }
+  if(restorePageFocus)pagination.querySelector('[aria-current="page"]')?.focus({preventScroll:true});
+ }
+ function addPostCards(){
+  const sort=document.querySelector('[data-blog-sort]');
+  const pagination=document.querySelector('[data-blog-pagination]');
+  if(sort)sort.addEventListener('change',()=>{
+   blogSortDirection=sort.value==='asc'?'asc':'desc';
+   blogCurrentPage=1;
+   renderBlogArchive();
+  });
+  if(pagination)pagination.addEventListener('click',event=>{
+   const button=event.target.closest('button[data-blog-page]');
+   if(!button||button.disabled)return;
+   const nextPage=Number(button.dataset.blogPage);
+   if(!Number.isInteger(nextPage)||nextPage<1)return;
+   blogCurrentPage=nextPage;
+   renderBlogArchive(true);
+  });
+  renderBlogArchive();
  }
  function safeUrl(url){
   const value=String(url||'').trim();

@@ -26,10 +26,21 @@ class Phase3ArchiveUXTests(unittest.TestCase):
         self.assertIn('class="ed-reader-body project-reader"', self.html)
         self.assertIn(".project-reader .project-case", CSS)
 
-    def test_diary_index_uses_actual_post_excerpts(self):
-        self.assertIn('<nav class="diary-index"', self.html)
-        self.assertIn("card.className='diary-entry'", APP_JS)
-        self.assertIn("post.excerpt", APP_JS)
+    def test_diary_archive_uses_a_sorted_paginated_title_list(self):
+        self.assertIn('<section class="diary-index"', self.html)
+        self.assertIn('data-post-list', self.html)
+        self.assertIn('data-blog-sort', self.html)
+        self.assertIn('data-blog-pagination', self.html)
+        self.assertIn('blogPageSize=10', APP_JS)
+        self.assertIn("blogSortDirection==='asc'?posts:[...posts].reverse()", APP_JS)
+        self.assertIn('function blogPageTokens(current,total)', APP_JS)
+        self.assertIn("if(total<7)return Array.from({length:total}", APP_JS)
+        self.assertIn("if(current<=3)return [1,2,3,4,'ellipsis',total]", APP_JS)
+        self.assertIn("if(current>=total-2)return [1,'ellipsis',total-3,total-2,total-1,total]", APP_JS)
+        self.assertIn("return [1,'ellipsis',current-1,current,current+1,'ellipsis',total]", APP_JS)
+        self.assertIn('ordered.slice(start,start+blogPageSize)', APP_JS)
+        self.assertNotIn("card.className='diary-entry'", APP_JS)
+        self.assertNotIn("cards.className='diary-card-grid'", APP_JS)
         self.assertNotIn("a.className='ed-entry ed-post-entry'", self.html)
 
     def test_diary_reader_is_a_notebook_not_a_project_case(self):
