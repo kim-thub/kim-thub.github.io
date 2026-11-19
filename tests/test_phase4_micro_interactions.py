@@ -33,19 +33,21 @@ class Phase4MicroInteractionTests(unittest.TestCase):
 
     def test_code_blocks_expand_on_desktop_hover_and_keyboard_focus(self):
         self.assertIn('@media (min-width:851px) and (hover:hover) and (pointer:fine)', CSS)
-        self.assertIn('.portfolio-code:hover{', CSS)
-        self.assertIn('.portfolio-code:focus-within{', CSS)
+        self.assertIn('.portfolio-code.has-horizontal-overflow:hover{', CSS)
+        self.assertIn('.portfolio-code.has-horizontal-overflow:focus-within{', CSS)
         self.assertIn('calc(100vw - 400px)', CSS)
         self.assertIn('calc(50vw + 218px)', CSS)
         self.assertIn('min(1000px', CSS)
         self.assertIn('.portfolio-code pre:focus-visible', CSS)
+        self.assertIn("figure.classList.toggle('has-horizontal-overflow',pre.scrollWidth>pre.clientWidth+1);", APP_JS)
+        self.assertIn("document.addEventListener('transitionend'", APP_JS)
 
         focusability = APP_JS.index("if(!pre.hasAttribute('tabindex'))pre.tabIndex=0;")
         existing_frame_return = APP_JS.index("if(pre.closest('.portfolio-code'))return;")
         self.assertLess(focusability, existing_frame_return)
         self.assertIn('overflow:auto', CSS)
         self.assertIn('@media (max-width:850px)', CSS)
-        self.assertIn('.portfolio-code:hover,.portfolio-code:focus-within{width:100%;max-width:100%;box-shadow:none;}', CSS)
+        self.assertIn('.portfolio-code.has-horizontal-overflow:hover,.portfolio-code.has-horizontal-overflow:focus-within{width:100%;max-width:100%;box-shadow:none;}', CSS)
 
         import sys
         sys.path.insert(0, str(ROOT / 'scripts'))

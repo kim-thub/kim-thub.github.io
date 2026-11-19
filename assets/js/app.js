@@ -99,6 +99,36 @@
  document.addEventListener('animationend',event=>{
   if(event.target.matches('.view[data-entering="true"]')&&event.animationName==='archive-view-arrive')event.target.removeAttribute('data-entering');
  });
+ function updateCodeOverflow(pre){
+  const figure=pre.closest('.portfolio-code');
+  if(!figure)return;
+  if(figure.classList.contains('has-horizontal-overflow')&&figure.matches(':hover,:focus-within'))return;
+  figure.classList.toggle('has-horizontal-overflow',pre.scrollWidth>pre.clientWidth+1);
+ }
+ function scheduleCodeOverflowCheck(root){
+  if(!root)return;
+  requestAnimationFrame(()=>root.querySelectorAll('.portfolio-code pre').forEach(updateCodeOverflow));
+ }
+ let codeOverflowResizeFrame=0;
+ window.addEventListener('resize',()=>{
+  cancelAnimationFrame(codeOverflowResizeFrame);
+  codeOverflowResizeFrame=requestAnimationFrame(()=>document.querySelectorAll('.portfolio-code pre').forEach(updateCodeOverflow));
+ },{passive:true});
+ document.addEventListener('transitionend',event=>{
+  if(event.propertyName!=='width')return;
+  const figure=event.target.closest('.portfolio-code');
+  const pre=figure?.querySelector('pre');
+  if(pre)updateCodeOverflow(pre);
+ });
+ function scheduleCodeOverflowRecheck(event){
+  const figure=event.target.closest('.portfolio-code.has-horizontal-overflow');
+  if(!figure||figure.contains(event.relatedTarget))return;
+  const pre=figure.querySelector('pre');
+  if(pre)window.setTimeout(()=>updateCodeOverflow(pre),250);
+ }
+ document.addEventListener('pointerout',scheduleCodeOverflowRecheck);
+ document.addEventListener('focusout',scheduleCodeOverflowRecheck);
+ if(document.fonts?.ready)document.fonts.ready.then(()=>document.querySelectorAll('.portfolio-code pre').forEach(updateCodeOverflow));
  function enhanceCodeFrames(root){
   if(!root)return;
   root.querySelectorAll('pre').forEach(pre=>{
@@ -116,6 +146,7 @@
    if(code&&!code.classList.contains('language-'+language))code.classList.add('language-'+language);
    figure.append(caption,pre);
   });
+  scheduleCodeOverflowCheck(root);
  }
  function enhanceRelatedPostLinks(root){
   if(!root)return;
