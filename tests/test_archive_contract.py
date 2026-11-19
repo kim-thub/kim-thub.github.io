@@ -36,7 +36,7 @@ class ArchiveContractTests(unittest.TestCase):
         from build_projects import APP_JS_FILE, CSS_FILE
 
         self.assertEqual(len(re.findall(r"<style\b", self.html)), 0)
-        self.assertIn('<link rel="stylesheet" href="assets/css/style.css">', self.html)
+        self.assertIn('<link rel="stylesheet" href="assets/css/style.css?v=f0a93c7">', self.html)
         self.assertEqual(CSS_FILE, CSS)
         self.assertEqual(APP_JS_FILE, APP_JS)
         self.assertTrue(CSS.is_file())
