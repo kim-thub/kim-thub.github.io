@@ -102,6 +102,7 @@
  function enhanceCodeFrames(root){
   if(!root)return;
   root.querySelectorAll('pre').forEach(pre=>{
+   if(!pre.hasAttribute('tabindex'))pre.tabIndex=0;
    if(pre.closest('.portfolio-code'))return;
    const code=pre.querySelector('code');
    const classes=(pre.className+' '+(code?code.className:''));

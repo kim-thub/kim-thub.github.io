@@ -31,6 +31,27 @@ class Phase4MicroInteractionTests(unittest.TestCase):
         self.assertIn('.diary-entry:focus-visible', CSS)
         self.assertIn('pointermove', APP_JS)
 
+    def test_code_blocks_expand_on_desktop_hover_and_keyboard_focus(self):
+        self.assertIn('@media (min-width:851px) and (hover:hover) and (pointer:fine)', CSS)
+        self.assertIn('.portfolio-code:hover{', CSS)
+        self.assertIn('.portfolio-code:focus-within{', CSS)
+        self.assertIn('calc(100vw - 351px)', CSS)
+        self.assertIn('calc(50vw + 260px)', CSS)
+        self.assertIn('min(1000px', CSS)
+        self.assertIn('.portfolio-code pre:focus-visible', CSS)
+
+        focusability = APP_JS.index("if(!pre.hasAttribute('tabindex'))pre.tabIndex=0;")
+        existing_frame_return = APP_JS.index("if(pre.closest('.portfolio-code'))return;")
+        self.assertLess(focusability, existing_frame_return)
+        self.assertIn('overflow:auto', CSS)
+        self.assertIn('@media (max-width:850px)', CSS)
+        self.assertIn('.portfolio-code:hover,.portfolio-code:focus-within{width:100%;max-width:100%;box-shadow:none;}', CSS)
+
+        import sys
+        sys.path.insert(0, str(ROOT / 'scripts'))
+        from build_projects import update_project_router
+        self.assertIn("if(!pre.hasAttribute('tabindex'))pre.tabIndex=0;", update_project_router(APP_JS))
+
     def test_project_toc_keeps_active_item_in_view(self):
         self.assertIn('containerRect=toc.getBoundingClientRect(),itemRect=activeButton.getBoundingClientRect()', APP_JS)
         self.assertIn('toc.scrollLeft', APP_JS)
