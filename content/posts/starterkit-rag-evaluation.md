@@ -1,5 +1,5 @@
 ---
-index_order: 9
+index_order: 5
 title: 상속길잡이 스타터킷의 청킹 평가와 원문 보존
 slug: starterkit-rag-evaluation
 excerpt: 청킹 방식에 따라 검색 결과와 활용할 수 있는 근거가 어떻게 달라지는지 비교했습니다. 토큰 상한을 지키면서 원문을 보존하고, 검색된 정보의 출처를 추적하는 과정까지 기록했습니다.

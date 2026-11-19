@@ -1,5 +1,5 @@
 ---
-index_order: 2
+index_order: 7
 title: Spring Boot로 쿠폰 발급의 잠금 대기를 추적한 경량 APM
 slug: first-post
 excerpt: 하나의 응답 시간에는 서로 다른 기다림이 겹쳐 있습니다. 쿠폰 발급 요청의 흐름을 따라가며 PostgreSQL의 잠금 대기를 확인하고, 관측한 숫자가 말해주는 것과 끝내 설명하지 못하는 것의 경계를 기록했습니다.

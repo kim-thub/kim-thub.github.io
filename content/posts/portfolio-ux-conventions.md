@@ -1,7 +1,7 @@
 ---
 title: 표지는 낯설게, 목차는 분명하게
 slug: portfolio-ux-conventions
-index_order: 0
+index_order: 9
 excerpt: 첫 화면에는 콜라주를, 탐색에는 익숙한 길을 남겼다. 이 포트폴리오에서 표현과 사용성의 경계를 정한 이유를 기록한다.
 ---
 # 표지는 낯설게, 목차는 분명하게

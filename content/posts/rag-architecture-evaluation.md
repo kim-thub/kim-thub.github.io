@@ -1,7 +1,7 @@
 ---
 title: 🔎 어떤 RAG를 실제로 선택해야 할까? — 회의록 242청크·8개 방식의 검색과 답변 품질 비교
 slug: rag-architecture-evaluation
-index_order: 1
+index_order: 8
 date: 2026-11-14
 excerpt: 242개 청크와 Golden Set 24문항으로 8개 RAG 방식을 비교했습니다. 사람 검수를 마친 결과 H1을 다음 교체 파일럿으로 선정했으며, 무답 처리 보완 전까지 현재 서비스는 V1을 유지합니다.
 ---

@@ -1,5 +1,5 @@
 ---
-index_order: 6
+index_order: 3
 title: Git 상태를 확인하고 안전하지 않으면 멈추는 Taskflow
 slug: github-taskflow-safe-workflow
 excerpt: stash/pop으로 변경사항을 옮기던 절차를 줄이고, 현재 변경사항이나 로컬 커밋이 다른 PR에 섞이지 않도록 실제 Git 저장소에서 확인한 기록입니다.

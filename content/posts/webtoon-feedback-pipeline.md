@@ -1,5 +1,5 @@
 ---
-index_order: 8
+index_order: 0
 title: 웹툰 댓글 분석에서 분류 기준을 통일하기까지
 slug: webtoon-feedback-pipeline
 excerpt: 댓글 분류 모델의 출력 범위와 서비스의 분류 범위가 달랐습니다. 화면 집계와 Gemini 피드백에 같은 기준을 적용한 과정을 기록합니다.

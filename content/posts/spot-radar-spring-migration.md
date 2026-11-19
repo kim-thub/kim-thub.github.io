@@ -1,5 +1,5 @@
 ---
-index_order: 5
+index_order: 2
 title: SPOT RADAR의 Spring Boot 마이그레이션과 조회 비용 개선
 slug: spot-radar-spring-migration
 excerpt: 기존 API 계약을 유지하면서 요청 시간과 SQL 실행 시간을 나눠 측정하고, 상권 기본 정보 조회와 반복 데이터 조회를 줄인 과정입니다.

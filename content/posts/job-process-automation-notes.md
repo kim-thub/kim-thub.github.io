@@ -1,5 +1,5 @@
 ---
-index_order: 7
+index_order: 1
 title: 채용 메일을 Obsidian 기록으로 옮긴 개인 자동화
 slug: job-process-automation-notes
 excerpt: 채용 메일을 자동으로 수집하고 Obsidian에 정리했습니다. 반복 작업은 줄었지만, 지원할 회사를 결정하는 일은 여전히 제 몫이었습니다.

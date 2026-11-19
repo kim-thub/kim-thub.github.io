@@ -1,7 +1,7 @@
 ---
 title: 🔎 RAG 검색은 Dense만으로 충분할까? — BM25·RRF·GraphRAG 직접 비교
 slug: rag-search-methods-comparison
-index_order: 3
+index_order: 6
 date: 2026-11-06
 excerpt: 29문항 Silver Set에서 Dense, 재정렬, Hybrid, 경량 그래프 검색을 비교했습니다. Hybrid는 근거 회수, 기존 재정렬은 정답 근거의 순위에서 강점을 보였고, 경량 Graph 파일럿의 확대 적용은 보류했습니다.
 ---
