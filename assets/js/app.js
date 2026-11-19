@@ -21,7 +21,6 @@
  function renderBlogArchive(restorePageFocus=false){
   const list=document.querySelector('[data-post-list]');
   const pagination=document.querySelector('[data-blog-pagination]');
-  const count=document.querySelector('[data-blog-count]');
   if(!list||!pagination)return;
   const ordered=blogSortDirection==='asc'?posts:[...posts].reverse();
   const totalPages=Math.ceil(ordered.length/blogPageSize);
@@ -42,11 +41,6 @@
    item.append(link);
    list.append(item);
   });
-  if(count){
-   count.textContent=pagePosts.length
-    ?`전체 ${ordered.length}개 글 · ${start+1}–${start+pagePosts.length} 표시`
-    :'아직 게시된 글이 없습니다.';
-  }
   pagination.replaceChildren();
   pagination.hidden=totalPages<=1;
   if(totalPages>1){
@@ -75,12 +69,37 @@
   }
   if(restorePageFocus)pagination.querySelector('[aria-current="page"]')?.focus({preventScroll:true});
  }
- function addPostCards(){
+ function updateBlogSortControl(sort){
+  if(!sort)return;
+  const descending=blogSortDirection==='desc';
+  const current=descending?'최신 글부터':'오래된 글부터';
+  const next=descending?'오래된 글부터':'최신 글부터';
+  sort.dataset.direction=blogSortDirection;
+  sort.setAttribute('aria-label',`${current} 정렬 중. 클릭하면 ${next}로 정렬`);
+  sort.setAttribute('aria-pressed',String(descending));
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 24 24');
+  svg.setAttribute('fill','none');
+  svg.setAttribute('aria-hidden','true');
+  svg.setAttribute('focusable','false');
+  const paths=[
+   'M4 6h9M4 10h6M4 14h3',
+   descending?'M18 5v14m-4-4 4 4 4-4':'M18 19V5m-4 4 4-4 4 4'
+  ];
+  paths.forEach(d=>{
+   const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+   path.setAttribute('d',d);
+   svg.append(path);
+  });
+  sort.replaceChildren(svg);
+ }
+ function initBlogArchive(){
   const sort=document.querySelector('[data-blog-sort]');
   const pagination=document.querySelector('[data-blog-pagination]');
-  if(sort)sort.addEventListener('change',()=>{
-   blogSortDirection=sort.value==='asc'?'asc':'desc';
+  if(sort)sort.addEventListener('click',()=>{
+   blogSortDirection=blogSortDirection==='desc'?'asc':'desc';
    blogCurrentPage=1;
+   updateBlogSortControl(sort);
    renderBlogArchive();
   });
   if(pagination)pagination.addEventListener('click',event=>{
@@ -91,6 +110,7 @@
    blogCurrentPage=nextPage;
    renderBlogArchive(true);
   });
+  updateBlogSortControl(sort);
   renderBlogArchive();
  }
  function safeUrl(url){
@@ -340,5 +360,5 @@ let projectTocObserver=null;
  },{passive:true});
  window.history.scrollRestoration='manual';let scrollSaveFrame=0;window.addEventListener('scroll',()=>{if(scrollSaveFrame)return;scrollSaveFrame=requestAnimationFrame(()=>{scrollSaveFrame=0;try{sessionStorage.setItem(scrollKey(current()),String(window.scrollY))}catch{}})},{passive:true});
  document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const target=(a.getAttribute('href')||'').slice(1),from=current();if(target===from){e.preventDefault();return}try{if(target.startsWith('project/')||target.startsWith('post/'))sessionStorage.removeItem(scrollKey(target))}catch{}});
- window.addEventListener('hashchange',render);addPostCards();render();
+ window.addEventListener('hashchange',render);initBlogArchive();render();
 })();

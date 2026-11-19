@@ -36,8 +36,8 @@ class ArchiveContractTests(unittest.TestCase):
         from build_projects import APP_JS_FILE, CSS_FILE
 
         self.assertEqual(len(re.findall(r"<style\b", self.html)), 0)
-        self.assertIn('<link rel="stylesheet" href="assets/css/style.css?v=blog-index-20261119">', self.html)
-        self.assertIn('<script src="assets/js/app.js?v=blog-index-20261119"></script>', self.html)
+        self.assertIn('<link rel="stylesheet" href="assets/css/style.css?v=blog-sort-icon-20261119">', self.html)
+        self.assertIn('<script src="assets/js/app.js?v=blog-sort-icon-20261119"></script>', self.html)
         self.assertEqual(CSS_FILE, CSS)
         self.assertEqual(APP_JS_FILE, APP_JS)
         self.assertTrue(CSS.is_file())
@@ -49,8 +49,8 @@ class ArchiveContractTests(unittest.TestCase):
             for tag in script_tags
             if re.search(r'\bsrc="([^"]+)"', tag)
         ]
-        self.assertEqual(external_scripts, ["assets/js/app.js?v=blog-index-20261119", "assets/js/home-collage.js"])
-        self.assertLess(self.html.index('<script src="assets/js/app.js?v=blog-index-20261119">'), self.html.index("</body>"))
+        self.assertEqual(external_scripts, ["assets/js/app.js?v=blog-sort-icon-20261119", "assets/js/home-collage.js"])
+        self.assertLess(self.html.index('<script src="assets/js/app.js?v=blog-sort-icon-20261119">'), self.html.index("</body>"))
         self.assertLess(self.html.index('<script src="assets/js/home-collage.js">'), self.html.index("</body>"))
         inline_scripts = [tag for tag in script_tags if "src=" not in tag]
         self.assertEqual(inline_scripts, [' id="blog-posts-data" type="application/json"'])
