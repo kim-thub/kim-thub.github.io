@@ -1,12 +1,12 @@
 # 김수빈 웹 포트폴리오
 
-GitHub Pages로 배포하는 Paper Collage Archive입니다. 디자인과 인터랙션은 `index.html`에, 프로젝트 화면과 블로그 이미지 등 로컬 자료는 `assets/`에 있습니다.
+GitHub Pages로 배포하는 Paper Collage Archive입니다. 페이지 구조와 콘텐츠 데이터는 `index.html`에, 디자인은 `assets/css/style.css`에, 인터랙션은 `assets/js/`에 있습니다. 프로젝트 화면과 블로그 이미지는 `assets/`에 있습니다.
 
 ## 프로젝트와 글 수정
 
 - 프로젝트 원고는 `content/projects/`에서 수정합니다.
 - 블로그 글은 `content/first-post.md`와 `content/posts/`에서 Markdown으로 관리합니다. 현재는 글 10개를 공개합니다.
-- 프로젝트 원고 수정 뒤 `python3 scripts/build_projects.py`, 블로그 글 수정 뒤 `python3 scripts/build_blog.py`를 실행하면 `index.html`에 반영됩니다.
+- 프로젝트 원고 수정 뒤 `python3 scripts/build_projects.py`, 블로그 글 수정 뒤 `python3 scripts/build_blog.py`를 실행하면 `index.html`에 반영됩니다. 프로젝트 빌더는 관련 스타일과 앱 라우터를 각각 `assets/css/style.css`, `assets/js/app.js`에 갱신합니다.
 - 로컬 빌드는 `python3 -m pip install -r requirements-build.txt`로 준비합니다.
 - 회귀 검사는 `python3 -m unittest discover -s tests -v`로 실행합니다.
 

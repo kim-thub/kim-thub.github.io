@@ -12,6 +12,8 @@ from pygments.util import ClassNotFound
 ROOT = Path(__file__).resolve().parents[1]
 PROJECTS_DIR = ROOT / "content" / "projects"
 HTML_FILE = ROOT / "index.html"
+CSS_FILE = ROOT / "assets" / "css" / "style.css"
+APP_JS_FILE = ROOT / "assets" / "js" / "app.js"
 PROJECT_BLURBS = {
     "spot-radar": "상권 지표를 비교해 조사 후보 선별",
     "starter-kit": "LLM·RAG 개발 기반을 한곳에",
@@ -355,7 +357,7 @@ MOBILE_CASCADE_PATCH = r"""
 
 FINAL_APPROVED_CSS = r"""
 /* final-portfolio-polish:start */
-@font-face{font-family:"Archive Sans";src:url("assets/noto-sans-cjk-kr.woff") format("woff");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Archive Sans";src:url("../noto-sans-cjk-kr.woff") format("woff");font-style:normal;font-weight:400;font-display:swap}
 /* One consistent typeface across the site, including editorial labels. */
 @font-face{font-family:"NEXON Lv1 Gothic";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON%20Lv1%20Gothic%20OTF.woff") format("woff");font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:"NEXON Lv1 Gothic";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON%20Lv1%20Gothic%20OTF%20Bold.woff") format("woff");font-style:normal;font-weight:700;font-display:swap}
@@ -761,15 +763,12 @@ def replace_mobile_cascade_patch(source: str) -> str:
     )
     if count > 1:
         raise RuntimeError(f"화살표만 남기는 구형 도식 규칙이 중복되어 있습니다: {count}")
-    style_close = source.find("</style>")
-    if style_close < 0:
-        raise RuntimeError("통합 스타일 블록을 찾지 못했습니다.")
     patch = (
         "\n/* mobile-cascade-patch:start */\n"
         + MOBILE_CASCADE_PATCH.strip()
         + "\n/* mobile-cascade-patch:end */\n"
     )
-    return source[:style_close] + patch + source[style_close:]
+    return source.rstrip() + patch
 
 
 def replace_final_styles(source: str) -> str:
@@ -788,10 +787,7 @@ def replace_final_styles(source: str) -> str:
         re.DOTALL,
     )
     source = font_pair_marker.sub("\n", source)
-    style_close = source.find("</style>")
-    if style_close < 0:
-        raise RuntimeError("최종 스타일을 삽입할 <style>을 찾지 못했습니다.")
-    return source[:style_close] + "\n" + FINAL_APPROVED_CSS.strip() + "\n" + TYPOGRAPHY_CSS.strip() + "\n" + source[style_close:]
+    return source.rstrip() + "\n" + FINAL_APPROVED_CSS.strip() + "\n" + TYPOGRAPHY_CSS.strip() + "\n"
 
 
 def main() -> None:
@@ -805,6 +801,12 @@ def main() -> None:
     if not HTML_FILE.exists():
         raise FileNotFoundError(HTML_FILE)
     source = HTML_FILE.read_text(encoding="utf-8")
+    if not CSS_FILE.exists():
+        raise FileNotFoundError(CSS_FILE)
+    if not APP_JS_FILE.exists():
+        raise FileNotFoundError(APP_JS_FILE)
+    styles = CSS_FILE.read_text(encoding="utf-8")
+    app_js = APP_JS_FILE.read_text(encoding="utf-8")
     for slug, fragment in fragments.items():
         source = replace_template(source, slug, fragment)
     # The specimen shelf is regenerated from PROJECT_INDEX in one pass;
@@ -812,13 +814,15 @@ def main() -> None:
     # the legacy .ed-entry structure).
     source = replace_project_index(source)
     source = ensure_project_toc_markup(source)
-    source = update_project_router(source)
+    app_js = update_project_router(app_js)
     source = update_starter_kit_labels(source)
     source = update_job_process_labels(source)
-    source = replace_styles(source)
-    source = replace_mobile_cascade_patch(source)
-    source = replace_final_styles(source)
+    styles = replace_styles(styles)
+    styles = replace_mobile_cascade_patch(styles)
+    styles = replace_final_styles(styles)
     HTML_FILE.write_text(source, encoding="utf-8")
+    CSS_FILE.write_text(styles, encoding="utf-8")
+    APP_JS_FILE.write_text(app_js, encoding="utf-8")
     print(f"프로젝트 {len(PROJECT_INDEX)}개 소개를 {HTML_FILE.name}에 반영했습니다.")
 
 

@@ -7,6 +7,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "index.html"
+CSS = (ROOT / "assets" / "css" / "style.css").read_text(encoding="utf-8")
+APP_JS = (ROOT / "assets" / "js" / "app.js").read_text(encoding="utf-8")
 
 
 class Phase3ArchiveUXTests(unittest.TestCase):
@@ -22,17 +24,17 @@ class Phase3ArchiveUXTests(unittest.TestCase):
 
     def test_project_reader_has_its_own_exhibition_surface(self):
         self.assertIn('class="ed-reader-body project-reader"', self.html)
-        self.assertIn(".project-reader .project-case", self.html)
+        self.assertIn(".project-reader .project-case", CSS)
 
     def test_diary_index_uses_actual_post_excerpts(self):
         self.assertIn('<nav class="diary-index"', self.html)
-        self.assertIn("card.className='diary-entry'", self.html)
-        self.assertIn("post.excerpt", self.html)
+        self.assertIn("card.className='diary-entry'", APP_JS)
+        self.assertIn("post.excerpt", APP_JS)
         self.assertNotIn("a.className='ed-entry ed-post-entry'", self.html)
 
     def test_diary_reader_is_a_notebook_not_a_project_case(self):
         self.assertIn('class="ed-reader-body diary-reader"', self.html)
-        self.assertIn(".diary-reader .markdown-body", self.html)
+        self.assertIn(".diary-reader .markdown-body", CSS)
 
     def test_about_is_presented_as_an_owner_field_record(self):
         self.assertIn('profile-archive-sheet', self.html)
@@ -50,8 +52,8 @@ class Phase3ArchiveUXTests(unittest.TestCase):
         self.assertIn('href="#project/spot-radar"', rebuilt)
 
     def test_phase3_removes_the_shared_generic_index_styles(self):
-        self.assertNotIn('.ed-index .ed-entry', self.html)
-        self.assertNotIn('.ed-post-index', self.html)
+        self.assertNotIn('.ed-index .ed-entry', CSS)
+        self.assertNotIn('.ed-post-index', CSS)
 
     def test_phase3_does_not_change_project_or_post_counts(self):
         self.assertEqual(len(re.findall(r'<template id="tpl-[^\"]+">', self.html)), 6)

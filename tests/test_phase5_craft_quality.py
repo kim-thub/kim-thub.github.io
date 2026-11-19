@@ -7,6 +7,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML = (ROOT / "index.html").read_text(encoding="utf-8")
+CSS = (ROOT / "assets" / "css" / "style.css").read_text(encoding="utf-8")
+APP_JS = (ROOT / "assets" / "js" / "app.js").read_text(encoding="utf-8")
 
 
 def contrast_ratio(foreground: str, background: str) -> float:
@@ -23,38 +25,38 @@ def contrast_ratio(foreground: str, background: str) -> float:
 class Phase5CraftQualityTests(unittest.TestCase):
     def test_project_detail_promotes_template_title_to_visible_page_heading(self):
         self.assertIn('data-project-title', HTML)
-        self.assertRegex(HTML, r"projectHeading\.textContent\s*=\s*projectSourceTitle")
-        self.assertRegex(HTML, r"projectSourceTitle\.remove\(\)")
+        self.assertRegex(APP_JS, r"projectHeading\.textContent\s*=\s*projectSourceTitle")
+        self.assertRegex(APP_JS, r"projectSourceTitle\.remove\(\)")
 
     def test_diary_detail_has_a_visible_title_and_removes_duplicate_article_h1(self):
-        self.assertIn('data-post-title', HTML)
-        self.assertRegex(HTML, r"postHeading\?\.textContent\.trim\(\)")
-        self.assertRegex(HTML, r"postHeading\.remove\(\)")
-        self.assertIn(".diary-reader-head h1", HTML)
+        self.assertIn('data-post-title', APP_JS)
+        self.assertRegex(APP_JS, r"postHeading\?\.textContent\.trim\(\)")
+        self.assertRegex(APP_JS, r"postHeading\.remove\(\)")
+        self.assertIn(".diary-reader-head h1", CSS)
 
     def test_keyboard_navigation_focuses_visible_diary_title(self):
-        self.assertIn(".diary-reader-head h1", HTML)
-        self.assertRegex(HTML, r"else if\(route\.startsWith\('post/'\)\)focusTarget=activeView\?\.querySelector\([^;]*diary-reader-head h1")
+        self.assertIn(".diary-reader-head h1", CSS)
+        self.assertRegex(APP_JS, r"else if\(route\.startsWith\('post/'\)\)focusTarget=activeView\?\.querySelector\([^;]*diary-reader-head h1")
 
     def test_clipped_navigation_shape_keeps_a_visible_keyboard_focus_ring(self):
-        self.assertRegex(HTML, r"\.ed-nav a:focus-visible\s*\{[^}]*clip-path\s*:\s*none")
-        self.assertRegex(HTML, r"\.ed-nav a:focus-visible\s*\{[^}]*outline\s*:\s*3px")
+        self.assertRegex(CSS, r"\.ed-nav a:focus-visible\s*\{[^}]*clip-path\s*:\s*none")
+        self.assertRegex(CSS, r"\.ed-nav a:focus-visible\s*\{[^}]*outline\s*:\s*3px")
 
     def test_small_metadata_text_meets_wcag_aa_contrast_on_its_card_surfaces(self):
-        root = re.search(r":root\s*\{(.*?)\}", HTML, re.DOTALL)
+        root = re.search(r":root\s*\{(.*?)\}", CSS, re.DOTALL)
         self.assertIsNotNone(root)
         tokens = dict(re.findall(r"(--[\w-]+)\s*:\s*(#[0-9a-fA-F]{6})", root.group(1)))
         # The third home card uses paper-gold; its metadata must not use muted gray.
-        self.assertIn("color:var(--ink-soft)", HTML)
+        self.assertIn("color:var(--ink-soft)", CSS)
         self.assertGreaterEqual(contrast_ratio(tokens["--ink-soft"], tokens["--paper-gold"]), 4.5)
         # Diary READ NOTE appears on alternating sand cards.
-        self.assertRegex(HTML, r"\.diary-entry__read\s*\{[^}]*color\s*:\s*var\(--accent-strong\)")
+        self.assertRegex(CSS, r"\.diary-entry__read\s*\{[^}]*color\s*:\s*var\(--accent-strong\)")
         self.assertGreaterEqual(contrast_ratio(tokens["--accent-strong"], tokens["--paper-sand"]), 4.5)
         # Project specimen metadata also appears on lavender cards.
-        self.assertRegex(HTML, r"\.specimen-topline,\s*\.specimen-footer\s*\{[^}]*color\s*:\s*var\(--ink-soft\)")
+        self.assertRegex(CSS, r"\.specimen-topline,\s*\.specimen-footer\s*\{[^}]*color\s*:\s*var\(--ink-soft\)")
         self.assertGreaterEqual(contrast_ratio(tokens["--ink-soft"], tokens["--paper-lavender"]), 4.5)
         # Project reader eyebrow sits on a cool-paper header.
-        self.assertRegex(HTML, r"\.ed-reader-head small\s*\{[^}]*color\s*:\s*var\(--accent-strong\)")
+        self.assertRegex(CSS, r"\.ed-reader-head small\s*\{[^}]*color\s*:\s*var\(--accent-strong\)")
         self.assertGreaterEqual(contrast_ratio(tokens["--accent-strong"], tokens["--paper-cool"]), 4.5)
 
     def test_local_images_exist_and_have_nonempty_alt_text(self):
@@ -84,16 +86,16 @@ class Phase5CraftQualityTests(unittest.TestCase):
 
 
     def test_route_transition_does_not_rotate_viewport_wider_than_screen(self):
-        self.assertIn("@keyframes archive-view-arrive{\n  0%{opacity:0;transform:translateY(11px)}\n  100%{opacity:1;transform:translateY(0)}", HTML)
+        self.assertIn("@keyframes archive-view-arrive{\n  0%{opacity:0;transform:translateY(11px)}\n  100%{opacity:1;transform:translateY(0)}", CSS)
 
     def test_project_toc_scrolls_inside_its_own_container(self):
-        self.assertIn("containerRect=toc.getBoundingClientRect(),itemRect=activeButton.getBoundingClientRect()", HTML)
-        self.assertIn("toc.scrollLeft", HTML)
-        self.assertIn("toc.scrollTop", HTML)
-        self.assertNotIn("activeButton.scrollIntoView", HTML)
+        self.assertIn("containerRect=toc.getBoundingClientRect(),itemRect=activeButton.getBoundingClientRect()", APP_JS)
+        self.assertIn("toc.scrollLeft", APP_JS)
+        self.assertIn("toc.scrollTop", APP_JS)
+        self.assertNotIn("activeButton.scrollIntoView", APP_JS)
 
     def test_keyboard_navigation_focuses_home_heading_too(self):
-        self.assertIn("else if(route==='home')focusTarget=activeView?.querySelector('.ed-home-title')", HTML)
+        self.assertIn("else if(route==='home')focusTarget=activeView?.querySelector('.ed-home-title')", APP_JS)
 
     def test_static_hash_links_resolve_to_pages_routes_or_real_ids(self):
         ids = set(re.findall(r'\bid=["\']([^"\']+)', HTML))
@@ -127,12 +129,12 @@ class Phase5CraftQualityTests(unittest.TestCase):
                 self.fail(f"Broken in-page link: {href}")
 
     def test_responsive_table_enhancement_is_accessibly_named(self):
-        self.assertIn("mobile-table-cards", HTML)
-        self.assertIn("mobile-card-source", HTML)
-        self.assertIn("headers[index]", HTML)
+        self.assertIn("mobile-table-cards", CSS + APP_JS)
+        self.assertIn("mobile-card-source", APP_JS)
+        self.assertIn("headers[index]", APP_JS)
         self.assertIn("<dt>", HTML)
         self.assertIn("<dd>", HTML)
-        self.assertIn('<th scope="col">', HTML)
+        self.assertIn('<th scope="col">', APP_JS)
 
 
 if __name__ == "__main__":
