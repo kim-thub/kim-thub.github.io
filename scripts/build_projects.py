@@ -15,6 +15,7 @@ HTML_FILE = ROOT / "index.html"
 CSS_FILE = ROOT / "assets" / "css" / "style.css"
 APP_JS_FILE = ROOT / "assets" / "js" / "app.js"
 PROJECT_BLURBS = {
+    "ticketflow": "FIFO 대기열과 좌석 선점을 검증한 티켓 예매 시스템",
     "spot-radar": "상권 지표를 비교해 조사 후보 선별",
     "starter-kit": "LLM·RAG 개발 기반을 한곳에",
     "inheritance-guide": "상속 절차를 짚어 주는 안내 서비스",
@@ -23,6 +24,7 @@ PROJECT_BLURBS = {
     "job-process-automation": "채용 메일을 지원 기록으로 연결",
 }
 PROJECT_INDEX = [
+    ("ticketflow", "TicketFlow", "개인 프로젝트 · 2026.11", PROJECT_BLURBS["ticketflow"]),
     ("starter-kit", "AI Starter Kit", "팀 프로젝트 · 2026.10–11", PROJECT_BLURBS["starter-kit"]),
     ("spot-radar", "SPOT RADAR", "팀 프로젝트 · 2026.09–10", PROJECT_BLURBS["spot-radar"]),
     ("github-taskflow", "GitHub Taskflow", "개인 프로젝트 · 2026.09", PROJECT_BLURBS["github-taskflow"]),
@@ -581,7 +583,7 @@ def replace_project_index(source: str) -> str:
     )
     block = (
         '<section class="view" data-view="projects" hidden><div class="ed-content project-index-page">'
-        '<header class="ed-section-label"><small>INDEX / 06 · OBJECTS</small><h1>프로젝트 서가</h1></header>'
+        f'<header class="ed-section-label"><small>INDEX / {len(PROJECT_INDEX):02d} · OBJECTS</small><h1>프로젝트 서가</h1></header>'
         '<p class="ed-index-note project-index-note">문제의 모양이 달랐던 만큼, 해답을 찾아가는 경로도 같지 않았습니다. 각자의 출발점에서 선택하고 고쳐온 것들을 하나의 기록으로 묶었습니다.</p>'
         f'<nav class="project-shelf" data-project-index aria-label="프로젝트 표본 목록">{entries}</nav>'
         '</div></section>'
@@ -607,21 +609,6 @@ def ensure_project_toc_markup(source: str) -> str:
 <a data-route-link href="#blog">BLOG</a>
 <a data-route-link href="#about">ABOUT</a>
 </nav>
-<section class="ed-type-lab" aria-label="서체 조합 A/B 비교">
-  <div class="ed-type-lab__top">
-    <span class="ed-type-lab__label">TYPE STUDY</span>
-    <span class="ed-type-lab__current" data-type-pair-label>A · JALNAN GOTHIC</span>
-  </div>
-  <div class="ed-type-switch" role="group" aria-label="비교할 제목 서체 선택">
-    <button type="button" data-font-pair-choice="A" aria-pressed="true"><strong>A</strong><span>잘난체 고딕</span></button>
-    <button type="button" data-font-pair-choice="B" aria-pressed="false"><strong>B</strong><span>빗썸 Basic</span></button>
-  </div>
-  <div class="ed-type-sample" aria-live="polite">
-    <small>같은 문장 · 같은 크기</small>
-    <strong class="ed-type-sample__title">분류되지 않은 조각들</strong>
-    <p class="ed-type-sample__body">오래 마음에 남은 것들을 모으고, 시간이 지난 뒤 다시 펼쳐 봅니다.</p>
-  </div>
-</section>
 <nav id="ed-project-toc" class="ed-project-toc project-toc-nav" data-project-toc aria-label="현재 프로젝트 목차" hidden></nav>
 <div class="ed-rail-profile"><strong>CONTACT</strong><a href="mailto:wesbeen.k@gmail.com">wesbeen.k@gmail.com ↗</a></div>
 </aside>
