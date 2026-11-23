@@ -1,5 +1,5 @@
 (()=>{
- const projectSlugs=["starter-kit", "spot-radar", "github-taskflow", "job-process-automation", "webtoon-feedback", "inheritance-guide"];
+ const projectSlugs=["ticketflow","starter-kit","spot-radar","github-taskflow","job-process-automation","webtoon-feedback","inheritance-guide"];
  const views=[...document.querySelectorAll('[data-view]')];
  const activeProject=document.getElementById('active-project');
  const activePost=document.getElementById('active-post');
