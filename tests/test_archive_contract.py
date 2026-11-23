@@ -36,7 +36,7 @@ class ArchiveContractTests(unittest.TestCase):
         from build_projects import APP_JS_FILE, CSS_FILE
 
         self.assertEqual(len(re.findall(r"<style\b", self.html)), 0)
-        self.assertIn('<link rel="stylesheet" href="assets/css/style.css?v=blog-sort-icon-20261119">', self.html)
+        self.assertIn('<link rel="stylesheet" href="assets/css/style.css?v=ticketflow-layout-20261123">', self.html)
         self.assertIn('<script src="assets/js/app.js?v=ticketflow-route-20261123"></script>', self.html)
         self.assertEqual(CSS_FILE, CSS)
         self.assertEqual(APP_JS_FILE, APP_JS)
