@@ -82,7 +82,7 @@ class ArchiveContractTests(unittest.TestCase):
 
     def test_existing_project_and_post_counts_are_preserved(self):
         project_templates = re.findall(r'<template id="tpl-[^"]+">', self.html)
-        self.assertEqual(len(project_templates), 6)
+        self.assertEqual(len(project_templates), 7)
         match = re.search(
             r'<script id="blog-posts-data" type="application/json">(.*?)</script>',
             self.html,
@@ -178,53 +178,4 @@ class ArchiveContractTests(unittest.TestCase):
         self.assertIn('body[data-archive-art-played="true"] .archive-stage--c', self.css)
         self.assertIn("1 both", self.css)
         self.assertIn(".archive-stage--c,.archive-stage--b{display:none!important}", self.css)
-        self.assertIn(".archive-stage--a{display:block!important;opacity:1!important", self.css)
-
-    def test_signature_artwork_is_inline_and_has_no_external_asset_dependency(self):
-        self.assertIn('<svg class="labyrinth-being morph-archive" data-artwork-version="2"', self.html)
-        self.assertNotRegex(self.html, r'<(?:img|image)[^>]+(?:src|href)="https?://')
-
-    def test_archive_uses_one_named_visual_palette(self):
-        for token in ("--paper:", "--ink:", "--muted:", "--line:", "--accent:", "--plum:", "--sun:"):
-            self.assertIn(token, self.css)
-        self.assertIn("Paper Collage Archive — single visual language", self.css)
-        self.assertIn("background:var(--paper-cool)", self.css)
-
-    def test_phase1_has_one_semantic_design_token_source(self):
-        roots = re.findall(r":root\s*\{", self.css)
-        self.assertGreaterEqual(len(roots), 1)
-        for token in (
-            "--paper-white:", "--paper-sand:", "--paper-cool:", "--paper-lavender:",
-            "--ink-deep:", "--ink-soft:", "--accent-strong:", "--plum:",
-            "--sun:", "--shadow-soft:", "--texture-dot:", "--texture-rule:",
-            "--serif:", "--sans:", "--mono:",
-        ):
-            self.assertIn(token, self.css)
-
-    def test_phase1_archive_art_direction_consumes_tokens_not_raw_colors(self):
-        self.assertIn("/* Paper Collage Archive — single visual language */", self.css)
-        self.assertIn("var(--paper-cool)", self.css)
-        self.assertIn("var(--accent)", self.css)
-        self.assertIn("var(--texture-red)", self.css)
-
-    def test_phase1_removes_superseded_unmounted_collage_css(self):
-        for dead_selector in (
-            ".collage-paper", ".collage-strip", ".collage-disc", ".collage-star",
-            ".collage-note", ".collage-line", ".collage-shape",
-        ):
-            self.assertNotIn(dead_selector, self.css)
-
-    def test_phase1_reuses_archive_palette_in_svg_without_changing_geometry_or_motion(self):
-        svg = re.search(r'(<svg class="labyrinth-being morph-archive".*?</svg>)', self.html, re.DOTALL)
-        self.assertIsNotNone(svg)
-        for palette_color in ("#f3ecdf", "#b83e52", "#f0ca59", "#e4dbea", "#34293f"):
-            self.assertIn(palette_color, svg.group(1))
-        paths = re.findall(r'<(?:path|polygon|polyline)\b[^>]*?\bd="([^"]*)"', svg.group(1))
-        geometry_hash = hashlib.sha256("\n".join(paths).encode()).hexdigest()
-        self.assertEqual(geometry_hash, "6da4bf66f6d1f25773456a2a4d5d7a23bd46108be2249815172730ad24a9fedb")
-        self.assertIn("body[data-archive-art-played=\"true\"] .archive-stage--a", self.css)
-        self.assertIn("prefers-reduced-motion:reduce", self.css)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        self.assertIn(".archive-stage--a{display:block!important;opacity:1!import

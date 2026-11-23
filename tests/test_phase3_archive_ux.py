@@ -59,7 +59,7 @@ class Phase3ArchiveUXTests(unittest.TestCase):
 
         rebuilt = replace_project_index(self.html)
         self.assertIn('class="project-shelf"', rebuilt)
-        self.assertEqual(rebuilt.count('class="project-specimen"'), 6)
+        self.assertEqual(rebuilt.count('class="project-specimen"'), 7)
         self.assertIn('href="#project/spot-radar"', rebuilt)
 
     def test_phase3_removes_the_shared_generic_index_styles(self):
@@ -67,7 +67,7 @@ class Phase3ArchiveUXTests(unittest.TestCase):
         self.assertNotIn('.ed-post-index', CSS)
 
     def test_phase3_does_not_change_project_or_post_counts(self):
-        self.assertEqual(len(re.findall(r'<template id="tpl-[^\"]+">', self.html)), 6)
+        self.assertEqual(len(re.findall(r'<template id="tpl-[^\"]+">', self.html)), 7)
         match = re.search(r'<script id="blog-posts-data" type="application/json">(.*?)</script>', self.html, re.S)
         self.assertIsNotNone(match)
         source_posts = [path for path in (ROOT / "content" / "posts").glob("*.md") if path.name != "README.md"]
